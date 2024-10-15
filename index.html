@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizCraft</title>
+    <link rel="stylesheet" href="homestyle.css">
+
+</head>
+
+<body>
+    <nav>
+        <a href="sample.html">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+    </nav>
+    <div class="container">
+        <h1>QuizCraft</h1>
+        <p class="tagline">An interactive platform for mentors to create quizzes and students to join and participate.</br> Explore surveys, quizzes, and practice tests!</p>
+        <div class="button-container">
+            <button class="button">Create a Quiz</button>
+            <button class="button">Take a Quiz</button>
+        </div>
+
+        <section class="features">
+            <div class="feature-box">
+                <img src="https://static.vecteezy.com/system/resources/previews/016/146/265/non_2x/questionnaire-icon-in-comic-style-online-survey-cartoon-illustration-on-white-isolated-background-checklist-report-splash-effect-business-concept-vector.jpg"
+                    alt="Feature 1">
+                <h3>Surveys</h3>
+                <p>Detail about feature 1 goes here.</p>
+            </div>
+            <div class="feature-box">
+                <img src="https://i.pinimg.com/enabled/564x/8e/16/7f/8e167f29be487274e7e20cd34a694aa3.jpg"
+                    alt="Feature 2">
+                <h3>Quizzes</h3>
+                <p>Detail about feature 2 goes here.</p>
+            </div>
+            <div class="feature-box">
+                <img src="https://i.pinimg.com/enabled/564x/49/ad/b2/49adb256c3f2696c8cc8e6f8f2c9c9b4.jpg"
+                    alt="Feature 3">
+                <h3>Practice Tests</h3>
+                <p>Detail about feature 3 goes here.</p>
+            </div>
+            <div class="feature-box">
+                <img src="https://i.pinimg.com/564x/8d/02/91/8d029199565303934dfbece11c22a28c.jpg"
+                    alt="Feature 4">
+                <h3>Leaderboard</h3>
+                <p>Detail about feature 4 goes here.</p>
+            </div>
+        </section>
+
+      
+    </div>
+    <div class="hero">
+        <!-- Slideshow container -->
+        <div class="slideshow-container">
+
+            <!-- Slides -->
+            <div class="mySlides fade">
+                <img src="slide1.jpg" style="width:100%">
+                <div class="text">Caption 1</div>
+            </div>
+
+            <div class="mySlides fade">
+                <img src="slide2.jpg" style="width:100%">
+                <div class="text">Caption 2</div>
+            </div>
+
+            <div class="mySlides fade">
+                <img src="slide3.jpg" style="width:100%">
+                <div class="text">Caption 3</div>
+            </div>
+
+            <!-- Next and previous buttons -->
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+
+<body>
+
+
+
+
+
+
+
+    <footer>
+        <p>&copy; 2024 Your Company. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            let slides = document.getElementsByClassName("mySlides");
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1 }
+            slides[slideIndex - 1].style.display = "block";
+            setTimeout(showSlides, 3000); // Change image every 3 seconds
+        }
+
+        function plusSlides(n) {
+            slideIndex += n;
+            let slides = document.getElementsByClassName("mySlides");
+            if (slideIndex > slides.length) { slideIndex = 1 }
+            if (slideIndex < 1) { slideIndex = slides.length }
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slides[slideIndex - 1].style.display = "block";
+        }
+    </script>
+
+</body>
+
+</html>
