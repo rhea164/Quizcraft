@@ -1,0 +1,25 @@
+body {
+    font-size: 25;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    gap: 20px; /* Adjust the value as needed */
+}
+.container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;   
+}
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 2rem;
+}
