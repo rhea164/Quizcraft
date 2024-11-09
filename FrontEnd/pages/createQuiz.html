@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mentor Dashboard</title>
+    <title>Create a Quiz</title>
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
 </head>
 <body>
@@ -36,63 +36,33 @@
       </nav>
     <!-- Header -->
 
-    <!-- Main Scene with create quiz button -->
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <h1 class="text-center">HELLO MENTOR</h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <h1 class="text-center">Which Quiz do you wanna make today?</h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="d-flex gap-2 justify-content-center py-5">
-                <button class="btn btn-primary btn-lg align-items-center">Create Quiz</button>
-            </div>
-        </div>
-    </div>
-    <!-- Main Scene with create quiz button -->
-
-    <!-- Quiz List -->
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <h1 class="text-center">Your Quizzes</h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 d-flex flex-wrap justify-content-center gap-3">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Quiz 1</h5>
-                        <p class="card-text">Total Questions: 10</p>
-                        <p class="card-text">Total Marks: 100</p>
-                        <button class="btn btn-primary">Edit</button>
-                    </div>
-                </div>
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Quiz 2</h5>
-                        <p class="card-text">Total Questions: 10</p>
-                        <p class="card-text">Total Marks: 100</p>
-                        <button class="btn btn-primary">Edit</button>
-                    </div>
-                </div>
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Quiz 3</h5>
-                        <p class="card-text">Total Questions: 10</p>
-                        <p class="card-text">Total Marks: 100</p>
-                        <button class="btn btn-primary">Edit</button>
-                    </div>
+    <!-- Main Scene with create quiz functionality -->
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="text-center">CREATE A NEW QUIZ</h1>
                 </div>
             </div>
+            <form id="quizForm">
+                <div>
+                    <label for="questionType">Select Question Type:</label>
+                    <select id="questionType" name="questionType">
+                        <option value="trueFalse">True/False</option>
+                        <option value="multipleChoice">Multiple Choice</option>
+                    </select>
+                </div>
+    
+                <button type="button">Add Question</button>
+                <button type="submit">Submit Quiz</button>
+    
+                <div id="questionContainer">
+                    <!--yalls questions should be added here-->
+                </div>
+            </form>
         </div>
-    </div>
-    <!-- Quiz List -->
+    </main>
+    <!-- Main Scene with create quiz functionality -->
 
     <!-- Footer -->
     <div class="container">
@@ -113,7 +83,8 @@
         </footer>
     </div>
     <!-- Footer -->
-    
+
+
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
 </body>
 </html>
