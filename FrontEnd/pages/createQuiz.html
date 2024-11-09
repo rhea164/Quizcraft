@@ -37,31 +37,45 @@
     <!-- Header -->
 
     <!-- Main Scene with create quiz functionality -->
-    <main>
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <h1 class="text-center">CREATE A NEW QUIZ</h1>
-                </div>
-            </div>
-            <form id="quizForm">
-                <div>
-                    <label for="questionType">Select Question Type:</label>
-                    <select id="questionType" name="questionType">
-                        <option value="trueFalse">True/False</option>
-                        <option value="multipleChoice">Multiple Choice</option>
-                    </select>
-                </div>
-    
-                <button type="button">Add Question</button>
-                <button type="submit">Submit Quiz</button>
-    
-                <div id="questionContainer">
-                    <!--yalls questions should be added here-->
-                </div>
-            </form>
+    <div class="container mt-5">
+        <div class="row">
+          <div class="col-12">
+            <h1 class="text-center">CREATE A NEW QUIZ</h1>
+          </div>
         </div>
-    </main>
+        <form id="quizForm">
+          <div class="mb-3">
+            <label for="questionType" class="form-label">Select Question Type:</label>
+            <select id="questionType" name="questionType" class="form-select">
+              <option value="trueFalse">True/False</option>
+              <option value="multipleChoice">Multiple Choice</option>
+            </select>
+          </div>
+    
+          <button type="button" class="btn btn-primary mb-3" id="addQuestionBtn">Add Question</button>
+          <button type="submit" class="btn btn-success mb-3">Submit Quiz</button>
+    
+          <div id="questionContainer">
+            <!-- Questions will be added here -->
+            <!-- True/False Example Question -->
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="mb-3">
+                  <label for="questionText" class="form-label">Question:</label>
+                  <input type="text" class="form-control" name="questionText" placeholder="Enter your question here">
+                </div>
+                <div class="mb-3">
+                  <label for="correctOption" class="form-label">Correct Option:</label>
+                  <select class="form-select" name="correctOption">
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
     <!-- Main Scene with create quiz functionality -->
 
     <!-- Footer -->
