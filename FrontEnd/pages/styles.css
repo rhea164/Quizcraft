@@ -18,3 +18,69 @@ footer {
   /* Optional: adds background color */
 }
 
+
+body {
+  background-color: #f8f9fa;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+}
+
+.container-mine {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.bg-body-tertiary {
+  background-color: #343a40 !important;
+}
+
+.text-body-secondary {
+  color: #6c757d !important;
+  text-align: center;
+}
+
+.link-body-emphasis {
+  color: #007bff !important;
+}
+
+.navbar-brand {
+  color: #ffffff !important;
+  font-weight: bold;
+}
+
+.nav-link.active {
+  color: #ffffff !important;
+  font-weight: bold;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.card {
+  border: 1px solid #007bff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  color: #007bff;
+  font-weight: bold;
+}
+
+h1 {
+  color: #343a40;
+  font-weight: bold;
+}
