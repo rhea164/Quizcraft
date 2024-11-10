@@ -8,13 +8,88 @@
   <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="./styles.css">
 
+  <!-- style for mentor.html -->
+  <style>
+    body {
+      background-color: #f8f9fa;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      font-family: Arial, sans-serif;
+    }
+
+    .container-mine {
+      background-color: #ffffff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .bg-body-tertiary {
+      background-color: #343a40 !important;
+    }
+
+    .text-body-secondary {
+      color: #6c757d !important;
+    }
+
+    .link-body-emphasis {
+      color: #007bff !important;
+    }
+
+    .navbar-brand {
+      color: #ffffff !important;
+      font-weight: bold;
+    }
+
+    .nav-link.active {
+      color: #ffffff !important;
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+
+    .card {
+      border: 1px solid #007bff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+      color: #007bff;
+      font-weight: bold;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    h1 {
+      color: #343a40;
+      font-weight: bold;
+    }
+
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 0.5%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    }
+  </style>
 </head>
 
 <body>
   <!-- Header -->
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">QuizCraft</a>
+      <a class="navbar-brand" href="index.html">QuizCraft</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -22,19 +97,19 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" aria-current="page" href="index.html">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">About</a>
+            <a class="nav-link active" aria-current="page" href="about.html">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Instructions</a>
+            <a class="nav-link active" aria-current="page" href="instruction.html">Instructions</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Student</a>
+            <a class="nav-link active" aria-current="page" href="student.html">Student</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Mentor</a>
+            <a class="nav-link active" aria-current="page" href="mentor.html">Mentor</a>
           </li>
       </div>
     </div>
@@ -57,7 +132,7 @@
         </div>
         <div class="row">
           <div class="d-flex gap-2 justify-content-center py-5">
-            <button class="btn btn-primary btn-lg align-items-center">Create Quiz</button>
+            <a href="createQuiz.html" class="btn btn-primary btn-lg align-items-center">Create Quiz</a>
           </div>
         </div>
       </div>
@@ -118,11 +193,11 @@
       </a>
 
       <ul class="nav col-md-4 justify-content-end">
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Home</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">About</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Instructions</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Student</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Mentor</a></li>
+        <li class="nav-item"><a href="index.html" class="nav-link px-2 text-body-secondary">Home</a></li>
+        <li class="nav-item"><a href="about.html" class="nav-link px-2 text-body-secondary">About</a></li>
+        <li class="nav-item"><a href="instruction.html" class="nav-link px-2 text-body-secondary">Instructions</a></li>
+        <li class="nav-item"><a href="student.html" class="nav-link px-2 text-body-secondary">Student</a></li>
+        <li class="nav-item"><a href="mentor.html" class="nav-link px-2 text-body-secondary">Mentor</a></li>
       </ul>
     </footer>
   </div>
