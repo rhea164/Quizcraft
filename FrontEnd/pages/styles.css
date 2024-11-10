@@ -1,0 +1,19 @@
+
+/* Remove the fixed positioning */
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+footer {
+  margin-top: auto;
+  /* Push footer to bottom when content is short */
+  width: 100%;
+  background-color: white;
+  /* Optional: adds background color */
+}
