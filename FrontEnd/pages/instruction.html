@@ -9,31 +9,30 @@
   <link rel="stylesheet" href="./styles.css">
 
   <style>
-    /* CSS to make the cards bigger and more colorful */
-.student-card {
+  .student-card {
   background-color: #f1f9ff;
   border: 2px solid #007bff;
   padding: 20px;
-  min-height: 70vh; /* Makes the card taller */
-}
+  min-height: 70vh; 
+  }
 
-.mentor-card {
+  .mentor-card {
   background-color: #fff8e1;
   border: 2px solid #ff9800;
   padding: 20px;
-  min-height: 70vh; /* Makes the card taller */
-}
+  min-height: 70vh; 
+  }
 
-.card-title {
+  .card-title {
   font-weight: bold;
   margin-bottom: 20px;
-}
+  }
 
-ul.list-unstyled li {
+  ul.list-unstyled li {
   margin-bottom: 10px;
   font-size: 1.1rem;
   color: #333;
-}
+  }
   </style>
 
 </head>
@@ -78,14 +77,15 @@ ul.list-unstyled li {
             <div class="card-body">
               <h2 class="card-title text-primary">For Students</h2>
               <ul class="list-unstyled text-dark">
-                <li>1. Students are required to register themselves on the website.</li>
-                <li>2. After registration, students can log in to the website using their credentials.</li>
-                <li>3. Students can view the list of quizzes available to them.</li>
-                <li>4. Students can attempt the quiz and submit their answers.</li>
-                <li>5. Students can view their scores after submitting the quiz.</li>
-                <li>6. Students can view the leaderboard to see the scores of other students.</li>
-                <li>7. Students can view their profile and update their details.</li>
-                <li>8. Students can log out from the website after completing the quiz.</li>
+                <li><strong>Sign Up:</strong> Register on the website by filling in your details to get started.</li>
+                <li><strong>Take a Quiz:</strong> Select a quiz to participate in, and follow the instructions:
+                  <ul>
+                    <li><span class="highlight"><strong>Enter Code:</strong></span> Input the unique quiz code provided by your mentor.</li>
+                    <li><span class="highlight"><strong>Enter Username:</strong></span> Use your username to identify yourself.</li>
+                  </ul>
+                </li>
+                <li><strong>View Results:</strong> Instantly check your score and review feedback on each answer after completing the quiz.</li>
+                <li><strong>Log Out:</strong> Securely log out of your account when you're done.</li>
               </ul>
             </div>
           </div>
@@ -95,14 +95,19 @@ ul.list-unstyled li {
             <div class="card-body">
               <h2 class="card-title text-primary">For Mentors</h2>
               <ul class="list-unstyled text-dark">
-                <li>1. Mentors are required to register themselves on the website.</li>
-                <li>2. After registration, mentors can log in to the website using their credentials.</li>
-                <li>3. Mentors can view the list of quizzes created by them.</li>
-                <li>4. Mentors can create a new quiz by providing the quiz details and questions.</li>
-                <li>5. Mentors can view the list of students who have attempted the quiz.</li>
-                <li>6. Mentors can view the scores of students who have attempted the quiz.</li>
-                <li>7. Mentors can view their profile and update their details.</li>
-                <li>8. Mentors can log out from the website after completing the quiz.</li>
+                <li><strong>Mentor Login:</strong> Use your credentials to log in to your mentor account.</li>
+              <li><strong>Sign Up:</strong> Create a new mentor account if you’re joining for the first time.</li>
+              <li><strong>Create a Quiz:</strong> Customize quizzes to support your students' learning:
+              <ul>
+                <li><span class="highlight"><strong>Add MCQ Question:</strong></span> Formulate multiple-choice questions with various options.</li>
+                <li><span class="highlight"><strong>Add Boolean Question:</strong></span> Create questions with true/false or yes/no answers.</li>
+                <li><span class="highlight"><strong>Delete a Question:</strong></span> Remove unnecessary or incorrect questions.</li>
+                <li><span class="highlight"><strong>Edit Time:</strong></span> Set a specific time limit for quiz completion.</li>
+                <li><span class="highlight"><strong>Edit No. of Submissions:</strong></span> Control the number of quiz attempts students can make.</li>
+              </ul>
+              </li>
+              <li><strong>View Results:</strong> Track and review students' scores after quizzes are submitted.</li>
+              <li><strong>Log Out:</strong> Sign out securely once your tasks are completed.</li>
               </ul>
             </div>
           </div>
