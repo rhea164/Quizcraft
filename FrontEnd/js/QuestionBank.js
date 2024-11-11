@@ -1,16 +1,16 @@
 // QuestionBank.js
 
 // Store quizzes in localStorage to persist data
-const loadQuestionBank = () => {
-    const stored = localStorage.getItem('questionBank');
+const loadQuizzes = () => {
+    const stored = localStorage.getItem('quizzes');
     return stored ? JSON.parse(stored) : {};
   };
   
-  const saveQuestionBank = (questionBank) => {
-    localStorage.setItem('questionBank', JSON.stringify(questionBank));
+  const saveQuizzes = (quizzes) => {
+    localStorage.setItem('quizzes', JSON.stringify(quizzes));
   };
   
-  let questionBank = loadQuestionBank();
+  let quizzes = loadQuizzes();
   
   // Function to generate a unique quiz code (6-digit random code)
   function generateQuizCode() {
@@ -28,17 +28,17 @@ const loadQuestionBank = () => {
         timeLimit: timeLimit
     };
     
-    questionBank[quizCode] = quiz;
-    saveQuestionBank(questionBank);
-    console.log('Updated question bank:', questionBank);
+    quizzes[quizCode] = quiz;
+    saveQuizzes(quizzes);
+    console.log('Updated quizzes:', quizzes);
     return true;
   }
   
   // Function to fetch a quiz by its code
   function getQuizByCode(quizCode) {
     console.log('Fetching quiz with code:', quizCode);
-    console.log('Available quizzes:', questionBank);
-    return questionBank[quizCode] || null;
+    console.log('Available quizzes:', quizzes);
+    return quizzes[quizCode] || null;
   }
   
   // Export functions for use in other files
@@ -69,3 +69,5 @@ const loadQuestionBank = () => {
   };
 
   addQuiz(exampleQuiz.code, exampleQuiz.title, exampleQuiz.questions,exampleQuiz.timeLimit);
+
+  export { loadQuizzes };
