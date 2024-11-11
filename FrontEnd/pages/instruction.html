@@ -8,6 +8,34 @@
   <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="./styles.css">
 
+  <style>
+    /* CSS to make the cards bigger and more colorful */
+.student-card {
+  background-color: #f1f9ff;
+  border: 2px solid #007bff;
+  padding: 20px;
+  min-height: 70vh; /* Makes the card taller */
+}
+
+.mentor-card {
+  background-color: #fff8e1;
+  border: 2px solid #ff9800;
+  padding: 20px;
+  min-height: 70vh; /* Makes the card taller */
+}
+
+.card-title {
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+ul.list-unstyled li {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  color: #333;
+}
+  </style>
+
 </head>
 
 <body>
@@ -41,7 +69,48 @@
   </nav>
   <!-- Header -->
 
-
+  <!-- Instructions -->
+  <main>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card h-100 shadow-lg student-card">
+            <div class="card-body">
+              <h2 class="card-title text-primary">For Students</h2>
+              <ul class="list-unstyled text-dark">
+                <li>1. Students are required to register themselves on the website.</li>
+                <li>2. After registration, students can log in to the website using their credentials.</li>
+                <li>3. Students can view the list of quizzes available to them.</li>
+                <li>4. Students can attempt the quiz and submit their answers.</li>
+                <li>5. Students can view their scores after submitting the quiz.</li>
+                <li>6. Students can view the leaderboard to see the scores of other students.</li>
+                <li>7. Students can view their profile and update their details.</li>
+                <li>8. Students can log out from the website after completing the quiz.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card h-100 shadow-lg mentor-card">
+            <div class="card-body">
+              <h2 class="card-title text-primary">For Mentors</h2>
+              <ul class="list-unstyled text-dark">
+                <li>1. Mentors are required to register themselves on the website.</li>
+                <li>2. After registration, mentors can log in to the website using their credentials.</li>
+                <li>3. Mentors can view the list of quizzes created by them.</li>
+                <li>4. Mentors can create a new quiz by providing the quiz details and questions.</li>
+                <li>5. Mentors can view the list of students who have attempted the quiz.</li>
+                <li>6. Mentors can view the scores of students who have attempted the quiz.</li>
+                <li>7. Mentors can view their profile and update their details.</li>
+                <li>8. Mentors can log out from the website after completing the quiz.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>  
+  <!-- Instructions -->
 
   <!-- Footer -->
   <div class="container">
