@@ -101,7 +101,6 @@ footer {
   display: flex;
   justify-content: center; /* Centers the image horizontally */
   align-items: center; /* Centers the image vertically if container height is greater */
-  margin-top: 15px; /* Adds space above the image */
 }
 
 .card-image {
