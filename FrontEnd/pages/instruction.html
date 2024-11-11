@@ -8,6 +8,33 @@
   <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="./styles.css">
 
+  <style>
+  .student-card {
+  background-color: #f1f9ff;
+  border: 2px solid #007bff;
+  padding: 20px;
+  min-height: 70vh; 
+  }
+
+  .mentor-card {
+  background-color: #fff8e1;
+  border: 2px solid #ff9800;
+  padding: 20px;
+  min-height: 70vh; 
+  }
+
+  .card-title {
+  font-weight: bold;
+  margin-bottom: 20px;
+  }
+
+  ul.list-unstyled li {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  color: #333;
+  }
+  </style>
+
 </head>
 
 <body>
@@ -41,7 +68,54 @@
   </nav>
   <!-- Header -->
 
-
+  <!-- Instructions -->
+  <main>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card h-100 shadow-lg student-card">
+            <div class="card-body">
+              <h2 class="card-title text-primary">For Students</h2>
+              <ul class="list-unstyled text-dark">
+                <li><strong>Sign Up:</strong> Register on the website by filling in your details to get started.</li>
+                <li><strong>Take a Quiz:</strong> Select a quiz to participate in, and follow the instructions:
+                  <ul>
+                    <li><span class="highlight"><strong>Enter Code:</strong></span> Input the unique quiz code provided by your mentor.</li>
+                    <li><span class="highlight"><strong>Enter Username:</strong></span> Use your username to identify yourself.</li>
+                  </ul>
+                </li>
+                <li><strong>View Results:</strong> Instantly check your score and review feedback on each answer after completing the quiz.</li>
+                <li><strong>Log Out:</strong> Securely log out of your account when you're done.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card h-100 shadow-lg mentor-card">
+            <div class="card-body">
+              <h2 class="card-title text-primary">For Mentors</h2>
+              <ul class="list-unstyled text-dark">
+                <li><strong>Mentor Login:</strong> Use your credentials to log in to your mentor account.</li>
+              <li><strong>Sign Up:</strong> Create a new mentor account if you’re joining for the first time.</li>
+              <li><strong>Create a Quiz:</strong> Customize quizzes to support your students' learning:
+              <ul>
+                <li><span class="highlight"><strong>Add MCQ Question:</strong></span> Formulate multiple-choice questions with various options.</li>
+                <li><span class="highlight"><strong>Add Boolean Question:</strong></span> Create questions with true/false or yes/no answers.</li>
+                <li><span class="highlight"><strong>Delete a Question:</strong></span> Remove unnecessary or incorrect questions.</li>
+                <li><span class="highlight"><strong>Edit Time:</strong></span> Set a specific time limit for quiz completion.</li>
+                <li><span class="highlight"><strong>Edit No. of Submissions:</strong></span> Control the number of quiz attempts students can make.</li>
+              </ul>
+              </li>
+              <li><strong>View Results:</strong> Track and review students' scores after quizzes are submitted.</li>
+              <li><strong>Log Out:</strong> Sign out securely once your tasks are completed.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>  
+  <!-- Instructions -->
 
   <!-- Footer -->
   <div class="container">
