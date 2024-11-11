@@ -1,11 +1,12 @@
 import { generateQuizCode, addQuiz } from './QuestionBank.js';
-
+// let timeLimitInput;
 document.addEventListener('DOMContentLoaded', () => {
     // Get form elements
     const quizForm = document.getElementById('quizForm');
     const questionType = document.getElementById('questionType');
     const addQuestionBtn = document.getElementById('addQuestionBtn');
     const questionContainer = document.getElementById('questionContainer');
+    //  timeLimitInput = document.getElementById('timeLimit'); // Uncommented this line
 
     // Add question handler
     addQuestionBtn.addEventListener('click', () => {
@@ -20,9 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+const defaultTimeLimit = 60;
+
 function addQuestion(type) {
     let questionHtml = '';
-    
+
     if (type === 'trueFalse') {
         questionHtml = `
             <div class="card mb-3 question">
@@ -31,7 +34,8 @@ function addQuestion(type) {
                         <label class="form-label">Question:</label>
                         <input type="text" class="form-control questionText" placeholder="Enter your question here">
                     </div>
-                    <div class="mb-3">
+                    
+                    <div class="mb-3 flex-fill">
                         <label class="form-label">Correct Answer:</label>
                         <select class="form-select correctAnswer">
                             <option value="true">True</option>
@@ -49,14 +53,15 @@ function addQuestion(type) {
                         <label class="form-label">Question:</label>
                         <input type="text" class="form-control questionText" placeholder="Enter your question here">
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3 ">
                         <label class="form-label">Options:</label>
                         <input type="text" class="form-control mb-2 option" placeholder="Option A">
                         <input type="text" class="form-control mb-2 option" placeholder="Option B">
                         <input type="text" class="form-control mb-2 option" placeholder="Option C">
                         <input type="text" class="form-control mb-2 option" placeholder="Option D">
                     </div>
-                    <div class="mb-3">
+                   
+                    <div class="mb-3 flex-fill">
                         <label class="form-label">Correct Answer:</label>
                         <select class="form-select correctAnswer">
                             <option value="0">Option A</option>
@@ -65,6 +70,7 @@ function addQuestion(type) {
                             <option value="3">Option D</option>
                         </select>
                     </div>
+                   
                     <button type="button" class="btn btn-danger" onclick="deleteQuestion(this)">Delete Question</button>
                 </div>
             </div>`;
@@ -82,17 +88,18 @@ function finishQuiz() {
     const quizTitle = prompt("Enter a title for the quiz:");
     const quizCode = generateQuizCode();
     const questions = [];
+    const timeLimit = parseInt(document.getElementById('timeLimit').value) || 60;
 
     if (quizTitle) {
         // Gather all questions
         const questionDivs = document.querySelectorAll('.question');
-        
+
         questionDivs.forEach(div => {
             const questionText = div.querySelector('.questionText').value;
             const type = div.querySelector('.correctAnswer').options.length === 2 ? 'trueFalse' : 'multipleChoice';
-            
+
             let options, correctAnswer;
-            
+
             if (type === 'trueFalse') {
                 options = ['True', 'False'];
                 correctAnswer = div.querySelector('.correctAnswer').value;
@@ -101,20 +108,21 @@ function finishQuiz() {
                 const correctAnswerIndex = parseInt(div.querySelector('.correctAnswer').value);
                 correctAnswer = options[correctAnswerIndex];
             }
-            
+
             if (questionText && options.every(opt => opt)) {
                 questions.push({
                     question: questionText,
                     options: options,
                     answer: correctAnswer,
-                    type: type
+                    type: type,
+                    timeLimit: timeLimit
                 });
             }
         });
 
         if (questions.length > 0) {
-            const success = addQuiz(quizCode, quizTitle, questions);
-            
+            const success = addQuiz(quizCode, quizTitle, questions, timeLimit);
+
             if (success) {
                 alert(`Quiz created successfully! Quiz Code: ${quizCode}`);
                 questionContainer.innerHTML = '';

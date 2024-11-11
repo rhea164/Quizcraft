@@ -18,13 +18,14 @@ const loadQuestionBank = () => {
   }
   
   // Function to add a new quiz to the question bank
-  function addQuiz(quizCode, quizTitle, questions) {
-    console.log('Adding quiz:', { quizCode, quizTitle, questions });
+  function addQuiz(quizCode, quizTitle, questions,timeLimit) {
+    console.log('Adding quiz:', { quizCode, quizTitle, questions,timeLimit });
     
     const quiz = {
         code: quizCode,
         title: quizTitle,
-        questions: questions
+        questions: questions,
+        timeLimit: timeLimit
     };
     
     questionBank[quizCode] = quiz;
@@ -45,6 +46,7 @@ const loadQuestionBank = () => {
   
   // Add example quiz
   const exampleQuiz = {
+    code: "12345",
     title: "JavaScript Basics",
     questions: [
         {
@@ -61,9 +63,9 @@ const loadQuestionBank = () => {
             question: "What does `NaN` stand for?",
             options: ["Not a Number", "Not a Null", "Not a Name", "Not a Node"],
             answer: "Not a Number"
-        }
-    ]
+        },
+    ],
+    timeLimit:60
   };
-  
-  const quizCode = "FIXEDCODE";
-  addQuiz(quizCode, exampleQuiz.title, exampleQuiz.questions);
+
+  addQuiz(exampleQuiz.code, exampleQuiz.title, exampleQuiz.questions,exampleQuiz.timeLimit);
