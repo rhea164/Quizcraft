@@ -4,6 +4,9 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-image: url('../pages/assets/bg-img.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 main {
@@ -14,6 +17,94 @@ footer {
   margin-top: auto;
   /* Push footer to bottom when content is short */
   width: 100%;
-  background-color: white;
+  color: white;
   /* Optional: adds background color */
+}
+
+
+body {
+  background-color: #f0f4f8; /* Light gray-blue background for a modern look */
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+}
+
+.container-mine {
+  background-color: #ffffff; /* White container for contrast */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Softer shadow */
+  margin-bottom: 20px;
+}
+
+.bg-body-tertiary {
+  background-color: #1e2a38 !important; /* Dark blue-gray for a clean contrast */
+}
+
+.text-body-secondary {
+  color: #adb5bd !important; /* Soft gray for secondary text */
+  text-align: center;
+}
+
+.link-body-emphasis {
+  color: #4a90e2 !important; /* Bright blue link color */
+}
+
+.navbar-brand {
+  color: #ffffff !important;
+  font-weight: bold;
+}
+
+.nav-link.active {
+  color: #ffffff !important;
+  font-weight: bold;
+}
+
+.btn-primary {
+  background-color: #4a90e2; /* Modern blue color */
+  border-color: #4a90e2;
+}
+
+.btn-primary:hover {
+  background-color: #3a7ac8; /* Darker shade for hover effect */
+  border-color: #3a7ac8;
+}
+
+.card {
+  border: 1px solid #4a90e2; /* Border matches primary color */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Softer shadow for modern look */
+}
+
+.card-title {
+  color: #4a90e2; /* Primary color for titles */
+  font-weight: bold;
+}
+
+h1 {
+  color: #1e2a38; /* Dark blue-gray for main headers */
+  font-weight: bold;
+}
+
+/* Footer styling with transparency */
+footer {
+  background-color: rgba(30, 42, 56, 0.8); /* Dark blue-gray with slight transparency */
+  color: #adb5bd; /* Soft gray for footer text */
+  padding: 20px;
+  text-align: center;
+}
+
+
+.card-image-container {
+  display: flex;
+  justify-content: center; /* Centers the image horizontally */
+  align-items: center; /* Centers the image vertically if container height is greater */
+}
+
+.card-image {
+  max-width: 100%; /* Ensures the image doesn't exceed card width */
+  height: auto; /* Maintains aspect ratio */
+  border-radius: 8px; /* Optional: Adds rounded corners */
 }

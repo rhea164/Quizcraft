@@ -1,13 +1,13 @@
-<!-- createQuiz.html -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create a Quiz</title>
+  <title>Homepage</title>
   <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="./styles.css">
+
 </head>
 
 <body>
@@ -41,58 +41,60 @@
   </nav>
   <!-- Header -->
 
-  <!-- Main Scene with create quiz functionality -->
-  <main class="container mt-5">
-    <div class="container ">
-      <div class="row">
-        <div class="col-12">
-          <h1 class="text-center">CREATE A NEW QUIZ</h1>
+
+  <!-- Main Content -->
+  <main>
+    <div class="container mt-5">
+      <div class="container-mine">
+        <div class="text-center">
+          <h1>Welcome to QuizCraft</h1>
+          <h3 class="text-body-secondary">Choose your role to get started</h3>
+          <div class="mt-4">
+            <a href="student.html" class="btn btn-primary btn-lg align-items-center" style="padding: 15px 25px; font-size: 1.25rem;">I'm a Student</a>
+            <a href="mentor.html" class="btn btn-primary btn-lg align-items-center" style="padding: 15px 25px; font-size: 1.25rem;">I'm a Mentor</a>
+          </div>
         </div>
       </div>
-      <form id="quizForm">
-        <div class="d-flex flex-row justify-content-around">
-        <div class="mb-3 flex-fill">
-          <label for="questionType" class="form-label">Select Question Type:</label>
-          <select id="questionType" name="questionType" class="form-select " >
-            <option value="trueFalse">True/False</option>
-            <option value="multipleChoice">Multiple Choice</option>
-          </select>
-        </div>
-        <div class="mb-3  flex-fill" style="margin-left: 5%; ">
-          <label class="form-label">Time Limit (minutes):</label>
-          <input type="number" id="timeLimit" class="form-control" value="60" placeholder="Set time limit">
-      </div>
-      </div>
-
-        <button type="button" class="btn btn-primary mb-3" id="addQuestionBtn">Add Question</button>
-        
-        <button type="submit" class="btn btn-success mb-3">Submit Quiz</button>
-
-        <div id="questionContainer">
-          <!-- Questions will be added here -->
-          <!-- True/False Example Question
-            <div class="card mb-3">
-              <div class="card-body">
-                <div class="mb-3">
-                  <label for="questionText" class="form-label">Question:</label>
-                  <input type="text" class="form-control" name="questionText" placeholder="Enter your question here">
-                </div>
-                <div class="mb-3">
-                  <label for="correctOption" class="form-label">Correct Option:</label>
-                  <select class="form-select" name="correctOption">
-                    <option value="true">True</option>
-                    <option value="false">False</option>
-                  </select>
-                </div>
+      <!-- Features -->
+      <div class="row mt-5">
+        <div class="col-md-4">
+          <div class="card text-dark bg-light mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Create Quizzes</h5>
+              <p class="card-text">Our website offers an intuitive interface for mentors to create engaging quizzes easily, with customizable tools that enhance student learning and streamline quiz design for an effective educational experience.</p>
+              <div class="card-image-container">
+                <img src="../pages/assets/practice-test-il.webp" alt="illustration of practice tests" class="card-image">
               </div>
             </div>
-         -->
+          </div>
         </div>
-      </form>
+        <div class="col-md-4">
+          <div class="card text-dark bg-light mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Perform Practice Tests</h5>
+              <p class="card-text">Our platform allows students to enter a code and complete practice tests with instant scoring. This real-time feedback boosts engagement and enhances the learning process.</p>
+              <div class="card-image-container">
+                <img src="../pages/assets/practice-test-il.webp" alt="illustration of practice tests" class="card-image">
+              </div>
+            </div>
+          </div>          
+        </div>
+        <div class="col-md-4">
+          <div class="card text-dark bg-light mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Make Surveys</h5>
+              <p class="card-text">With user-friendly tools and customizable features, mentors can create surveys tailored for students, gathering valuable insights that help improve and personalize the learning experience.</p>
+              <div class="card-image-container">
+                <img src="../pages/assets/practice-test-il.webp" alt="illustration of practice tests" class="card-image">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
-  <!-- Main Scene with create quiz functionality -->
-
+  <!-- Main Content -->
+  
   <!-- Footer -->
   <div class="container">
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4">
@@ -109,10 +111,7 @@
   </div>
   <!-- Footer -->
 
-
-
   <script src="../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
-  <script type="module" src="../js/createQuiz.js"></script>
 </body>
 
 </html>
