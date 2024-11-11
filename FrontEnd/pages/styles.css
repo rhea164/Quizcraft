@@ -97,3 +97,15 @@ footer {
 }
 
 
+.card-image-container {
+  display: flex;
+  justify-content: center; /* Centers the image horizontally */
+  align-items: center; /* Centers the image vertically if container height is greater */
+  margin-top: 15px; /* Adds space above the image */
+}
+
+.card-image {
+  max-width: 100%; /* Ensures the image doesn't exceed card width */
+  height: auto; /* Maintains aspect ratio */
+  border-radius: 8px; /* Optional: Adds rounded corners */
+}
