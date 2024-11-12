@@ -8,6 +8,14 @@
   <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="./styles.css">
 
+  <style>
+    .center-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%; /* Fill the viewport height */
+    }
+  </style>
 </head>
 
 <body>
@@ -41,7 +49,26 @@
   </nav>
   <!-- Header -->
 
-
+  <!--Student Main Code-->
+  <main class="container mt-5">
+    <div class="center-container">
+      <div class="card p-4">
+        <div class="text-center">
+          <h1 class="mb-3">Hello Student</h1>
+          <h3 class="text-body-secondary mb-4">Enter the code to get started</h3>
+        </div>
+        <form>
+          <div class="mb-3">
+            <input type="text" id="student-code" class="form-control form-control-lg" placeholder="Enter your code here">
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>  
+  <!--Student Main Code-->
 
   <!-- Footer -->
   <div class="container">
