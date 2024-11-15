@@ -30,6 +30,14 @@ function displayQuizzes() {
     // Append the row to the table body
     tableBody.appendChild(row);
   });
+
+  // Add click event to all edit buttons
+  document.querySelectorAll('.edit-btn').forEach(button => {
+    button.addEventListener('click', (event) => {
+      const quizCode = event.target.getAttribute('data-code');
+      window.location.href = `editQuiz.html?code=${quizCode}`;
+    });
+  });
 }
 
 // Initialize the display when the page loads

@@ -1,12 +1,12 @@
 import { generateQuizCode, addQuiz } from './QuestionBank.js';
-// let timeLimitInput;
+
 document.addEventListener('DOMContentLoaded', () => {
     // Get form elements
     const quizForm = document.getElementById('quizForm');
     const questionType = document.getElementById('questionType');
     const addQuestionBtn = document.getElementById('addQuestionBtn');
     const questionContainer = document.getElementById('questionContainer');
-    //  timeLimitInput = document.getElementById('timeLimit'); // Uncommented this line
+    const quizTitleInput = document.getElementById('quizTitle'); // Added this line
 
     // Add question handler
     addQuestionBtn.addEventListener('click', () => {
@@ -28,7 +28,7 @@ function addQuestion(type) {
 
     if (type === 'trueFalse') {
         questionHtml = `
-            <div class="card mb-3 question">
+            <div class="card mb-3 question" style="display: none;">
                 <div class="card-body">
                     <div class="mb-3">
                         <label class="form-label">Question:</label>
@@ -38,8 +38,8 @@ function addQuestion(type) {
                     <div class="mb-3 flex-fill">
                         <label class="form-label">Correct Answer:</label>
                         <select class="form-select correctAnswer">
-                            <option value="true">True</option>
-                            <option value="false">False</option>
+                            <option value="True">True</option>
+                            <option value="False">False</option>
                         </select>
                     </div>
                     <button type="button" class="btn btn-danger" onclick="deleteQuestion(this)">Delete Question</button>
@@ -47,7 +47,7 @@ function addQuestion(type) {
             </div>`;
     } else if (type === 'multipleChoice') {
         questionHtml = `
-            <div class="card mb-3 question">
+            <div class="card mb-3 question" style="display: none;">
                 <div class="card-body">
                     <div class="mb-3">
                         <label class="form-label">Question:</label>
@@ -76,7 +76,9 @@ function addQuestion(type) {
             </div>`;
     }
 
-    questionContainer.insertAdjacentHTML('beforeend', questionHtml);
+    $(questionHtml)
+    .appendTo('#questionContainer')
+    .slideDown(300);
 }
 
 function deleteQuestion(button) {
@@ -85,7 +87,7 @@ function deleteQuestion(button) {
 }
 
 function finishQuiz() {
-    const quizTitle = prompt("Enter a title for the quiz:");
+    const quizTitle = document.getElementById('quizTitle').value; // Changed this line
     const quizCode = generateQuizCode();
     const questions = [];
     const timeLimit = parseInt(document.getElementById('timeLimit').value) || 60;

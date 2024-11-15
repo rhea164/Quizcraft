@@ -70,4 +70,4 @@ const loadQuizzes = () => {
 
   addQuiz(exampleQuiz.code, exampleQuiz.title, exampleQuiz.questions,exampleQuiz.timeLimit);
 
-  export { loadQuizzes };
+  export { loadQuizzes, saveQuizzes };
