@@ -70,25 +70,27 @@
 
         <button type="button" class="btn btn-primary mb-3" id="addQuestionBtn">Add Question</button>
         
-        <button type="submit" class="btn btn-success mb-3">Save Quiz</button>
+        <button type="submit" class="btn btn-success mb-3" id="saveBtn">Save Quiz</button>
 
         <button type="button" class="btn btn-success mb-3">Cancel Changes</button>
-
-        <div id="questionContainer">
-          <div class="card mb-3 question-card-template d-none">
-            <div class="card-body">
-              <div class="mb-3">
-                <label for="questionText" class="form-label">Question:</label>
-                <input type="text" class="form-control question-input" placeholder="Enter your question here">
-              </div>
-              <div class="mb-3">
-                <label for="correctOption" class="form-label">Correct Option:</label>
-                <select class="form-select correct-option-select">
-                 
-                </select>
-              </div>
+        
+        <div class="card mb-3 question-card-template d-none">
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="questionText" class="form-label">Question:</label>
+              <input type="text" class="form-control question-input" placeholder="Enter your question here">
+            </div>
+            <div class="mb-3">
+              <label for="correctOption" class="form-label">Correct Option:</label>
+              <select class="form-select correct-option-select">
+               
+              </select>
             </div>
           </div>
+        </div>
+
+        <div id="questionContainer">
+          
           
         </div>
       </form>
@@ -117,6 +119,5 @@
   <script src="../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script type="module" src="../js/editQuiz.js"></script>
-  <script type="module" src="../js/createQuiz.js"></script>
 </body>
 </html>
