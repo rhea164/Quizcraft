@@ -9,6 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (pageType === 'edit') {
   const quizForm = document.getElementById('qForm');
   const addQuestionBtn = document.getElementById('addQBtn');
+  const cancelBtn = document.getElementById('cancelBtn');
+
+  // Add event listener for the cancel button
+  cancelBtn.addEventListener('click', () => {
+    window.location.href = 'mentor.html'; // Redirect to mentor.html
+  });
 
   addQuestionBtn.addEventListener('click', addQuestionHandler);
 
