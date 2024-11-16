@@ -104,7 +104,6 @@ function populateQuestions(questions) {
     correctOptionSelect.value = question.answer;
 
 
-
     // Populate the options dropdown with the available options (whether it's MCQ or True/False)
     question.options.forEach((optionText) => {
       const option = document.createElement('option');
@@ -124,7 +123,6 @@ function populateQuestions(questions) {
     deleteButton.setAttribute('type', 'button'); // Prevents form submission
     deleteButton.addEventListener('click', (event) => {
       const questionIndex = parseInt(event.target.getAttribute('data-index'), 10);
-      console.log(questionIndex);
       deleteQuestion(event,questionIndex);
     });
 
@@ -146,23 +144,17 @@ populateQuestions(quizData.questions);
 //delete question from quiz
 function deleteQuestion(event,index) {
   // Remove the question from quizData.questions
-  console.log(quizData.questions);
   quizData.questions.splice(index, 1);
-  console.log(quizData.questions);
   // Get the delete button that was clicked
   const questionDiv = event.target.closest('.question');
   questionDiv.remove();
-
-  // Just update the UI without saving to localStorage
-  // populateQuestions(quizData.questions);
+ 
 }
 
 
 
 // Save the updated quiz data back to localStorage
 function saveQuiz() {
-  const quizzes = JSON.parse(localStorage.getItem('quizzes')) || {};
-
   // Update the existing quiz data from form fields
   quizData.title = titleInput.value;
   quizData.timeLimit = parseInt(timeLimitInput.value, 10);
