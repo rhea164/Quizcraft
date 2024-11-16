@@ -4,7 +4,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-image: url('../pages/assets/bg-img.jpg');
+  background-image: url('../views/assets/bg-img.jpg');
   
   background-position: center;
 }

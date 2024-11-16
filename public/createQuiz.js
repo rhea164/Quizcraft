@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  
 
 const defaultTimeLimit = 60;
 

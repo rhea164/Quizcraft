@@ -1,24 +1,16 @@
+<!-- editQuiz.html -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Dashboard</title>
+  <title>Edit a Quiz</title>
   <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
-  <link rel="stylesheet" href="./styles.css">
-
-  <style>
-    .center-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%; /* Fill the viewport height */
-    }
-  </style>
+  <link rel="stylesheet" href="../public/styles.css">
 </head>
 
-<body>
+<body data-page="edit">
   <!-- Header -->
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
@@ -49,26 +41,62 @@
   </nav>
   <!-- Header -->
 
-  <!--Student Main Code-->
+  <!-- Main Scene with edit quiz functionality -->
   <main class="container mt-5">
-    <div class="center-container">
-      <div class="card p-4">
-        <div class="text-center">
-          <h1 class="mb-3">Hello Student</h1>
-          <h3 class="text-body-secondary mb-4">Enter the code to get started</h3>
+    <div class="container ">
+      <div class="row">
+        <div class="col-12">
+          <h1 class="text-center">Edit your Quiz</h1>
         </div>
-        <form>
-          <div class="mb-3">
-            <input type="text" id="student-code" class="form-control form-control-lg" placeholder="Enter your code here">
-          </div>
-          <div class="text-center">
-            <button type="submit" class="btn btn-primary btn-lg">Submit</button>
-          </div>
-        </form>
       </div>
+      <form id="qForm">
+        <div class="mb-3">
+          <label for="quizTitle" class="form-label">Quiz Title:</label>
+          <input type="text" id="quizTitle" class="form-control">
+        </div>
+        <div class="d-flex flex-row justify-content-around">
+        <div class="mb-3 flex-fill">
+          <label for="questionType" class="form-label">Select Question Type:</label>
+          <select id="questionType" name="questionType" class="form-select " >
+            <option value="trueFalse">True/False</option>
+            <option value="multipleChoice">Multiple Choice</option>
+          </select>
+        </div>
+        <div class="mb-3  flex-fill" style="margin-left: 5%; ">
+          <label class="form-label">Time Limit (minutes):</label>
+          <input type="number" id="timeLimit" class="form-control" value="60" placeholder="Set time limit">
+      </div>
+      </div>
+
+        <button type="button" class="btn btn-primary mb-3" id="addQBtn">Add Question</button>
+        
+        <button type="submit" class="btn btn-success mb-3" id="saveButton">Save Quiz</button>
+
+        <button type="button" class="btn btn-success mb-3" id="cancelBtn">Cancel Changes</button>
+
+        <div class="card mb-3 question-card-template question d-none">
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="questionText" class="form-label">Question:</label>
+              <input type="text" class="form-control questionText question-input" placeholder="Enter your question here">
+            </div>
+            <div class="mb-3">
+              <label for="correctOption" class="form-label">Correct Option:</label>
+              <select class="form-select correct-option-select correctAnswer">
+               
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div id="questionContainer">
+          
+          
+        </div>
+      </form>
     </div>
-  </main>  
-  <!--Student Main Code-->
+  </main>
+  <!-- Main Scene with edit quiz functionality -->
 
   <!-- Footer -->
   <div class="container">
@@ -86,7 +114,10 @@
   </div>
   <!-- Footer -->
 
-  <script src="../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
-</body>
 
+
+  <script src="../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="module" src="../public/editQuiz.js"></script>
+</body>
 </html>
