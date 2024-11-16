@@ -1,5 +1,5 @@
 // Import the `loadQuizzes` and `saveQuizzes` functions from QuestionBank.js
-import { loadQuizzes } from './QuestionBank.js';
+import { loadQuizzes, addQuiz } from './QuestionBank.js';
 import { addQuestion } from './createQuiz.js';
 
 
@@ -192,8 +192,13 @@ function saveQuiz() {
   quizData.questions = questions;
 
   // Save the updated quizData back to localStorage
-  quizzes[quizCode] = quizData;
-  localStorage.setItem('quizzes', JSON.stringify(quizzes));
+  // quizzes[quizCode] = quizData;
+  // localStorage.setItem('quizzes', JSON.stringify(quizzes));
+
+  //adding the changed quiz
+  addQuiz(quizCode,quizData.title,quizData.questions,quizData.timeLimit);
+
+
 
   // Notify the user and redirect
   alert('Quiz updated successfully!');
