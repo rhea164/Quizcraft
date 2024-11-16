@@ -9,16 +9,45 @@
   <link rel="stylesheet" href="../public/styles.css">
 
   <style>
+
     .login-container {
       max-width: 400px;
       margin: 50px auto;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       border-radius: 10px;
     }
 
     .login-title {
       margin-bottom: 20px;
+      color: #343a40;
+    }
+
+    .form-control {
+      border-radius: 5px;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #004085;
+    }
+
+    .form-check-label {
+      color: #6c757d;
+    }
+
+    .text-decoration-none {
+      color: #007bff;
+    }
+
+    .text-decoration-none:hover {
+      color: #0056b3;
     }
   </style>
 </head>
@@ -58,18 +87,21 @@
   <main>
     <div class="container">
       <div class="login-container">
-        <h2 class="text-center login-title">Enter your details</h2>
+        <h2 class="text-center login-title">Login to QuizCraft</h2>
         <form>
-          <div class="form-group">
-            <label for="email">Username</label>
-            <input type="text" class="form-control" id="username" placeholder="Enter username">
+          <div class="form-group mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" placeholder="Enter username" required>
           </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="Password">
+          <div class="form-group mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Enter password" required>
           </div>
-          <div class="d-flex gap-2 justify-content-center py-5">
-            <button class="btn btn-primary btn-lg align-items-center">Log In</button>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <a href="./signup.html" class="text-decoration-none align-items-center mb3">Dont have account? Sign in</a>
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-lg">Log In</button>
           </div>
         </form>
       </div>
