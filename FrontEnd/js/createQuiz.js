@@ -1,25 +1,42 @@
 import { generateQuizCode, addQuiz } from './QuestionBank.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Get form elements
-    const quizForm = document.getElementById('quizForm');
-    const questionType = document.getElementById('questionType');
-    const addQuestionBtn = document.getElementById('addQuestionBtn');
-    const questionContainer = document.getElementById('questionContainer');
-    const quizTitleInput = document.getElementById('quizTitle'); // Added this line
+// document.addEventListener('DOMContentLoaded', () => {
+//     // Get form elements
+ 
+//     const questionType = document.getElementById('questionType');
+//     const addQuestionBtn = document.getElementById('addQuestionBtn');
+//     const questionContainer = document.getElementById('questionContainer');
+//     const quizTitleInput = document.getElementById('quizTitle'); // Added this line
 
-    // Add question handler
-    addQuestionBtn.addEventListener('click', () => {
+//     // Add question handler
+//     addQuestionBtn.addEventListener('click', () => {
+//         const type = questionType.value;
+//         addQuestion(type);
+//     });
+// });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const pageType = document.body.getAttribute('data-page');
+  
+    if (pageType === 'create') {
+      const quizForm = document.getElementById('quizForm');
+      const addQuestionBtn = document.getElementById('addQuestionBtn');
+      const questionType = document.getElementById('questionType');
+      
+  
+      addQuestionBtn.addEventListener('click', () => {
         const type = questionType.value;
         addQuestion(type);
-    });
-
-    // Form submission handler
-    quizForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+      });
+  
+      quizForm.addEventListener('submit', (event)=> {
+        event.preventDefault();
         finishQuiz();
-    });
-});
+      });
+    }
+  });
+
+  
 
 const defaultTimeLimit = 60;
 
@@ -116,8 +133,7 @@ function finishQuiz() {
                     question: questionText,
                     options: options,
                     answer: correctAnswer,
-                    type: type,
-                    timeLimit: timeLimit
+                    type: type
                 });
             }
         });
@@ -141,8 +157,9 @@ function finishQuiz() {
 }
 
 // Make functions available globally
-window.addQuestion = addQuestion;
-window.deleteQuestion = deleteQuestion;
-window.finishQuiz = finishQuiz;
 
-export { addQuestion, deleteQuestion, finishQuiz };
+window.deleteQuestion = deleteQuestion;
+
+
+
+export { addQuestion, deleteQuestion };

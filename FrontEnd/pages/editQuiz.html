@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 
-<body>
+<body data-page="edit">
   <!-- Header -->
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
@@ -41,7 +41,7 @@
   </nav>
   <!-- Header -->
 
-  <!-- Main Scene with create quiz functionality -->
+  <!-- Main Scene with edit quiz functionality -->
   <main class="container mt-5">
     <div class="container ">
       <div class="row">
@@ -49,7 +49,7 @@
           <h1 class="text-center">Edit your Quiz</h1>
         </div>
       </div>
-      <form id="quizForm">
+      <form id="qForm">
         <div class="mb-3">
           <label for="quizTitle" class="form-label">Quiz Title:</label>
           <input type="text" id="quizTitle" class="form-control">
@@ -68,12 +68,12 @@
       </div>
       </div>
 
-        <button type="button" class="btn btn-primary mb-3" id="addQuestionBtn">Add Question</button>
+        <button type="button" class="btn btn-primary mb-3" id="addQBtn">Add Question</button>
         
-        <button type="submit" class="btn btn-success mb-3" id="saveBtn">Save Quiz</button>
+        <button type="submit" class="btn btn-success mb-3" id="saveButton">Save Quiz</button>
 
         <button type="button" class="btn btn-success mb-3">Cancel Changes</button>
-        
+
         <div class="card mb-3 question-card-template d-none">
           <div class="card-body">
             <div class="mb-3">
@@ -96,7 +96,7 @@
       </form>
     </div>
   </main>
-  <!-- Main Scene with create quiz functionality -->
+  <!-- Main Scene with edit quiz functionality -->
 
   <!-- Footer -->
   <div class="container">

@@ -2,14 +2,42 @@
 import { loadQuizzes } from './QuestionBank.js';
 import { addQuestion } from './createQuiz.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  const addQuestionBtn = document.getElementById('addQuestionBtn');
 
-  addQuestionBtn.addEventListener('click', () => {
-    const type = questionType.value;
-    addQuestion(type);
+document.addEventListener('DOMContentLoaded', () => {
+  const pageType = document.body.getAttribute('data-page');
+
+  if (pageType === 'edit') {
+  const quizForm = document.getElementById('qForm');
+  const addQuestionBtn = document.getElementById('addQBtn');
+
+  addQuestionBtn.addEventListener('click', addQuestionHandler);
+
+  quizForm.addEventListener('submit',submitQuizHandler );
+  }
+
+  // Add the event listener
+ 
 });
+
+function addQuestionHandler() {
+  const type = questionType.value;
+  addQuestion(type);
 }
+
+function submitQuizHandler(event) {
+  event.preventDefault();
+
+  // Update quiz data from the form fields
+  quizData.title = titleInput.value;
+  quizData.timeLimit = parseInt(timeLimitInput.value, 10);
+
+  // Save the updated quiz data to localStorage
+  // quizzes[quizCode] = quizData;
+  saveQuiz(quizzes);
+
+  // alert('Quiz updated successfully!');
+  window.location.href = 'mentor.html';
+};
 
 // Helper function to get query parameters
 function getQueryParam(param) {
@@ -117,27 +145,14 @@ function deleteQuestion(index) {
   localStorage.setItem('quizzes', JSON.stringify(quizzes));
 
   // Refresh the question list display
-  populateQuestions(quizData.questions);
+  // populateQuestions(quizData.questions);
 
   // Show the alert after updating
   // alert('Question deleted!');
 }
 
 // Save changes when the form is submitted
-document.getElementById('quizForm').addEventListener('submit', (event) => {
-  event.preventDefault();
 
-  // Update quiz data from the form fields
-  quizData.title = titleInput.value;
-  quizData.timeLimit = parseInt(timeLimitInput.value, 10);
-
-  // Save the updated quiz data to localStorage
-  quizzes[quizCode] = quizData;
-  saveQuiz(quizzes);
-
-  // alert('Quiz updated successfully!');
-  window.location.href = 'mentor.html';
-});
 
 
 
@@ -145,14 +160,52 @@ document.getElementById('quizForm').addEventListener('submit', (event) => {
 function saveQuiz() {
   const quizzes = JSON.parse(localStorage.getItem('quizzes')) || {};
 
-  // Update the existing quiz object
-  quizzes[quizCode] = quizData;
+  // Update the existing quiz data from form fields
+  quizData.title = titleInput.value;
+  quizData.timeLimit = parseInt(timeLimitInput.value, 10);
 
-  // Save the updated quizzes object back to localStorage
+  // Update questions list from the form
+  const questions = [];
+  const questionDivs = document.querySelectorAll('.question');
+
+  questionDivs.forEach(div => {
+    const questionText = div.querySelector('.questionText').value;
+    const type = div.querySelector('.correctAnswer').options.length === 2 ? 'trueFalse' : 'multipleChoice';
+
+    let options, correctAnswer;
+
+    if (type === 'trueFalse') {
+      options = ['True', 'False'];
+      correctAnswer = div.querySelector('.correctAnswer').value;
+    } else {
+      options = Array.from(div.querySelectorAll('.option')).map(opt => opt.value);
+      const correctAnswerIndex = parseInt(div.querySelector('.correctAnswer').value);
+      correctAnswer = options[correctAnswerIndex];
+    }
+
+    if (questionText && options.every(opt => opt)) {
+      questions.push({
+        question: questionText,
+        options: options,
+        answer: correctAnswer,
+        type: type
+      });
+    }
+  });
+
+  // Update the questions in quizData
+  quizData.questions = questions;
+
+  // Save the updated quizData back to localStorage
+  quizzes[quizCode] = quizData;
   localStorage.setItem('quizzes', JSON.stringify(quizzes));
 
+  // Notify the user and redirect
   alert('Quiz updated successfully!');
-  window.location.href = 'mentor.html';
+  // window.location.href = 'mentor.html';
 }
+
+
+
 
 
