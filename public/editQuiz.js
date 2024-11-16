@@ -41,7 +41,6 @@ function submitQuizHandler(event) {
   // quizzes[quizCode] = quizData;
   saveQuiz(quizzes);
 
-  // alert('Quiz updated successfully!');
   window.location.href = 'mentor.html';
 };
 
@@ -87,6 +86,8 @@ function populateQuestions(questions) {
   const questionContainer = document.getElementById('questionContainer');
   const questionTemplate = document.querySelector('.question-card-template');
 
+  console.log(quizData.questions);
+
   questionContainer.innerHTML = ''; // Clear existing content
 
   questions.forEach((question, index) => {
@@ -120,9 +121,11 @@ function populateQuestions(questions) {
     deleteButton.textContent = 'Delete Question';
     deleteButton.classList.add('btn', 'btn-danger');
     deleteButton.setAttribute('data-index', index); // Set data attribute
+    deleteButton.setAttribute('type', 'button'); // Prevents form submission
     deleteButton.addEventListener('click', (event) => {
       const questionIndex = parseInt(event.target.getAttribute('data-index'), 10);
-      deleteQuestion(questionIndex);
+      console.log(questionIndex);
+      deleteQuestion(event,questionIndex);
     });
 
     // // Add the delete button to the question card
@@ -140,26 +143,19 @@ function populateQuestions(questions) {
 populateQuestions(quizData.questions);
 
 
-// Delete a question from the quiz
-function deleteQuestion(index) {
-  // Remove the question from quizData
+//delete question from quiz
+function deleteQuestion(event,index) {
+  // Remove the question from quizData.questions
+  console.log(quizData.questions);
   quizData.questions.splice(index, 1);
+  console.log(quizData.questions);
+  // Get the delete button that was clicked
+  const questionDiv = event.target.closest('.question');
+  questionDiv.remove();
 
-  // Update the quiz in localStorage
-  const quizzes = JSON.parse(localStorage.getItem('quizzes')) || {};
-  quizzes[quizCode] = quizData;
-  console.log(quizzes);
-  localStorage.setItem('quizzes', JSON.stringify(quizzes));
-
-  // Refresh the question list display
+  // Just update the UI without saving to localStorage
   // populateQuestions(quizData.questions);
-
-  // Show the alert after updating
-  // alert('Question deleted!');
 }
-
-// Save changes when the form is submitted
-
 
 
 
