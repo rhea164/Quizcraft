@@ -1,5 +1,5 @@
 // Import the `loadQuizzes` and `saveQuizzes` functions from QuestionBank.js
-import { loadQuizzes } from './QuestionBank.js';
+import { loadQuizzes, addQuiz } from './QuestionBank.js';
 import { addQuestion } from './createQuiz.js';
 
 
@@ -41,7 +41,6 @@ function submitQuizHandler(event) {
   // quizzes[quizCode] = quizData;
   saveQuiz(quizzes);
 
-  // alert('Quiz updated successfully!');
   window.location.href = 'mentor.html';
 };
 
@@ -87,6 +86,8 @@ function populateQuestions(questions) {
   const questionContainer = document.getElementById('questionContainer');
   const questionTemplate = document.querySelector('.question-card-template');
 
+  console.log(quizData.questions);
+
   questionContainer.innerHTML = ''; // Clear existing content
 
   questions.forEach((question, index) => {
@@ -101,7 +102,6 @@ function populateQuestions(questions) {
     // Set the correct option
     const correctOptionSelect = questionCard.querySelector('.correct-option-select');
     correctOptionSelect.value = question.answer;
-
 
 
     // Populate the options dropdown with the available options (whether it's MCQ or True/False)
@@ -120,9 +120,10 @@ function populateQuestions(questions) {
     deleteButton.textContent = 'Delete Question';
     deleteButton.classList.add('btn', 'btn-danger');
     deleteButton.setAttribute('data-index', index); // Set data attribute
+    deleteButton.setAttribute('type', 'button'); // Prevents form submission
     deleteButton.addEventListener('click', (event) => {
       const questionIndex = parseInt(event.target.getAttribute('data-index'), 10);
-      deleteQuestion(questionIndex);
+      deleteQuestion(event,questionIndex);
     });
 
     // // Add the delete button to the question card
@@ -140,33 +141,20 @@ function populateQuestions(questions) {
 populateQuestions(quizData.questions);
 
 
-// Delete a question from the quiz
-function deleteQuestion(index) {
-  // Remove the question from quizData
+//delete question from quiz
+function deleteQuestion(event,index) {
+  // Remove the question from quizData.questions
   quizData.questions.splice(index, 1);
-
-  // Update the quiz in localStorage
-  const quizzes = JSON.parse(localStorage.getItem('quizzes')) || {};
-  quizzes[quizCode] = quizData;
-  console.log(quizzes);
-  localStorage.setItem('quizzes', JSON.stringify(quizzes));
-
-  // Refresh the question list display
-  // populateQuestions(quizData.questions);
-
-  // Show the alert after updating
-  // alert('Question deleted!');
+  // Get the delete button that was clicked
+  const questionDiv = event.target.closest('.question');
+  questionDiv.remove();
+ 
 }
-
-// Save changes when the form is submitted
-
 
 
 
 // Save the updated quiz data back to localStorage
 function saveQuiz() {
-  const quizzes = JSON.parse(localStorage.getItem('quizzes')) || {};
-
   // Update the existing quiz data from form fields
   quizData.title = titleInput.value;
   quizData.timeLimit = parseInt(timeLimitInput.value, 10);
@@ -204,8 +192,13 @@ function saveQuiz() {
   quizData.questions = questions;
 
   // Save the updated quizData back to localStorage
-  quizzes[quizCode] = quizData;
-  localStorage.setItem('quizzes', JSON.stringify(quizzes));
+  // quizzes[quizCode] = quizData;
+  // localStorage.setItem('quizzes', JSON.stringify(quizzes));
+
+  //adding the changed quiz
+  addQuiz(quizCode,quizData.title,quizData.questions,quizData.timeLimit);
+
+
 
   // Notify the user and redirect
   alert('Quiz updated successfully!');
