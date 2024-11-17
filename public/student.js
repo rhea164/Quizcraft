@@ -2,7 +2,7 @@ document.querySelector('form').addEventListener('submit', (event) => {
     event.preventDefault();
     
     const quizCode = document.getElementById('student-code').value.trim();
-    const quizzes = JSON.parse(localStorage.getItem('quizzes')) || {};
+    const quizzes = JSON.parse(sessionStorage.getItem('quizzes')) || {};
 
 
     // Check if the quiz code exists in the quizzes object

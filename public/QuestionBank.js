@@ -1,15 +1,23 @@
 // QuestionBank.js
 
-// Store quizzes in localStorage to persist data
+// Store quizzes in sessionStorage to persist data
 const loadQuizzes = () => {
-    const stored = localStorage.getItem('quizzes');
+    const stored = sessionStorage.getItem('quizzes');
     return stored ? JSON.parse(stored) : {};
   };
   
   const saveQuizzes = (quizzes) => {
-    localStorage.setItem('quizzes', JSON.stringify(quizzes));
+    sessionStorage.setItem('quizzes', JSON.stringify(quizzes));
   };
   
+  function setUsername(username) {
+    sessionStorage.setItem('username', username);
+}
+
+function getUsername() {
+    return sessionStorage.getItem('username');
+}
+
   let quizzes = loadQuizzes();
   
   // Function to generate a unique quiz code (6-digit random code)
@@ -18,10 +26,11 @@ const loadQuizzes = () => {
   }
   
   // Function to add a new quiz to the question bank
-  function addQuiz(quizCode, quizTitle, questions,timeLimit) {
+  function addQuiz(username,quizCode, quizTitle, questions,timeLimit) {
     console.log('Adding quiz:', { quizCode, quizTitle, questions,timeLimit });
     
     const quiz = {
+        username: username,
         code: quizCode,
         title: quizTitle,
         questions: questions,
@@ -46,8 +55,10 @@ const loadQuizzes = () => {
 
   // Add example quiz
   const exampleQuiz = {
+    username: "mike",
     code: "12345",
     title: "JavaScript Basics",
+    timeLimit:60,
     questions: [
         {
             question: "What is the output of `console.log(typeof null)`?",
@@ -64,10 +75,9 @@ const loadQuizzes = () => {
             options: ["Not a Number", "Not a Null", "Not a Name", "Not a Node"],
             answer: "Not a Number"
         },
-    ],
-    timeLimit:60
+    ]
   };
 
-  addQuiz(exampleQuiz.code, exampleQuiz.title, exampleQuiz.questions,exampleQuiz.timeLimit);
+  addQuiz(exampleQuiz.username,exampleQuiz.code, exampleQuiz.title, exampleQuiz.questions,exampleQuiz.timeLimit);
 
   export { loadQuizzes, saveQuizzes };

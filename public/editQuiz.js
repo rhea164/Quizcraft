@@ -79,6 +79,9 @@ const timeLimitInput = document.getElementById('timeLimit');
 titleInput.value = quizData.title;
 timeLimitInput.value = quizData.timeLimit;
 
+//getting the current user's username from sessionStorage
+let username=sessionStorage.getItem('username');
+
 
 
 // Function to populate questions in the form
@@ -196,7 +199,7 @@ function saveQuiz() {
   // localStorage.setItem('quizzes', JSON.stringify(quizzes));
 
   //adding the changed quiz
-  addQuiz(quizCode,quizData.title,quizData.questions,quizData.timeLimit);
+  addQuiz(username,quizCode,quizData.title,quizData.questions,quizData.timeLimit);
 
 
 

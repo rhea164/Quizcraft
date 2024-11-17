@@ -1,5 +1,7 @@
 import { generateQuizCode, addQuiz } from './QuestionBank.js';
 
+let username=sessionStorage.getItem('username');
+
 // document.addEventListener('DOMContentLoaded', () => {
 //     // Get form elements
  
@@ -138,7 +140,7 @@ function finishQuiz() {
         });
 
         if (questions.length > 0) {
-            const success = addQuiz(quizCode, quizTitle, questions, timeLimit);
+            const success = addQuiz(username,quizCode, quizTitle, questions, timeLimit);
 
             if (success) {
                 alert(`Quiz created successfully! Quiz Code: ${quizCode}`);

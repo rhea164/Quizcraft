@@ -17,7 +17,7 @@ function getQuizCodeFromURL() {
   async function loadQuestions() {
     try {
       const quizCode = getQuizCodeFromURL();
-      const quizzes = JSON.parse(localStorage.getItem('quizzes')) || {};
+      const quizzes = JSON.parse(sessionStorage.getItem('quizzes')) || {};
   
       if (!quizzes[quizCode]) {
         throw new Error('Quiz not found. Please check the quiz code.');

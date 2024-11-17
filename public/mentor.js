@@ -1,6 +1,15 @@
 // Import the `loadQuizzes` function from QuestionBank.js
 import { loadQuizzes } from './QuestionBank.js';
 
+// Check if the user is logged in
+const username = sessionStorage.getItem('username');
+if (!username) {
+  alert('You are not logged in. Redirecting to login page.');
+  window.location.href = './login.html';
+} else {
+  document.getElementById('mentorWelcome').innerText = `Welcome, ${username}!`;
+}
+
 // Function to display quizzes on the Mentor page
 function displayQuizzes() {
   const quizzes = loadQuizzes();
