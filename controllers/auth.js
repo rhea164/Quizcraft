@@ -21,10 +21,8 @@ exports.login = async (req, res) => {
 
     // Check if both email and password are provided
     if (!email || !password) {
-      console.log("login 1");
-
-      return res.status(400).sendFile(path.join(viewsDirectory, '/login.html'), {
-        message: 'Please provide an email and password' 
+      return res.status(400).render('/login', {
+        message: 'Please provide an email and password' // Error message if any field is missing
       });
     }
 
@@ -33,11 +31,9 @@ exports.login = async (req, res) => {
       console.log(results);
 
       // Check if the user exists and if the password matches the hashed password
-      if (!results || !(await bcrypt.compare(password, results[0].MENTOR_PASSWORD))) {
-        console.log("login 2");
-
-        res.status(401).sendFile(path.join(viewsDirectory, '/login.html'), {
-          message: 'Email or Password is incorrect' 
+      if (!results || !(await bcrypt.compare(password, results[0].password))) {
+        res.status(401).render('/login', {
+          message: 'Email or Password is incorrect' // Error message for invalid credentials
         });
       } else {
         const id = results[0].id; // Get the user's ID from the results
@@ -69,18 +65,14 @@ exports.signup = (req, res) => {
     if (results.length > 0) { 
         console.log("sign Up 1");
         // If the email already exists, render the register page with an error message
-        return res.sendFile(path.join(viewsDirectory, '/signup.html'), {
-       
-
+        return res.render('/signup', {
         message: 'This email is already in use. Try again.'
       });
     } 
     
     else if (password !== passwordConfirm) {
         // Check if passwords match; show an error if they don't
-        console.log("sign Up 2");
-
-        return res.sendFile(path.join(viewsDirectory, '/signup.html'), {
+        return res.render('/signup', {
         message: 'Passwords do not match. Try again.'
       });
     }
@@ -97,8 +89,7 @@ exports.signup = (req, res) => {
         console.log(error); // Log any database insertion errors
       } else {
         console.log(results); // Log the results of the insertion
-        console.log("login");
-        return res.sendFile(path.join(viewsDirectory, '/login.html'), {
+        return res.render('/login.html', {
           message: 'User registered successfully! Login now!' // Success message after registration
         });
       }
