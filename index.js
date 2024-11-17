@@ -1,57 +1,63 @@
-const express = require('express');
-const mysql = require('mysql');
-const path = require('path');
+// Importing required modules:
+const express = require("express"); // Express framework for creating the server
+const mysql = require("mysql"); // MySQL module for database connection
+const dotenv = require("dotenv"); // To load environment variables from a .env file
+const path = require("path"); // To work with file and directory paths
+const cookieParser = require('cookie-parser'); // Middleware to parse cookies
+
+// Define the port number on which the server will run
+const port = 5000;
+
+// Creating an instance of the Express application
 const app = express();
 
+// Configuring dotenv to read environment variables from a .env file
+dotenv.config({path: './.env'});
+
 // connecting to the database.
-var db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "QUIZCRAFT"
+const db = mysql.createConnection({
+    host: process.env.DATABASE_HOST, // Database host 
+    user: process.env.DATABASE_USER, // Database username
+    password: process.env.DATABASE_PASSWORD, // Database password
+    database: process.env.DATABASE // Database name
 });
 
+// Set up the public directory for serving static files like CSS and JavaScript
+const publicDirectory = path.join(__dirname, './public'); // Join the current directory with 'public'
+app.use(express.static(publicDirectory)); // Make the public directory accessible
+
+// Middleware to parse JSON data in incoming requests
+// Allows the server to handle requests with JSON payloads
+app.use(express.json());
+
+// Middleware to parse URL-encoded data (e.g., form submissions)
+// extended: false means it only supports simple objects (not nested)
+app.use(express.urlencoded({ extended: true }));
+
+// Middleware to parse cookies from incoming HTTP requests
+app.use(cookieParser());
+
+// Set the view engine to 'hbs' (Handlebars) for rendering dynamic pages
+app.set('view engine', 'hbs');
+
+
+// Connect to the MySQL database
 db.connect((error) => {
-    if(error){
-        console.log(error);
-    }else {
-        console.log("db is connected");
+    if (error) {
+        console.log(error); // Log an error if the connection fails
+    } else {
+        console.log("MySQL connected..."); // Confirm successful connection
     }
-}); 
+});
 
-const publicDirectory = path.join(__dirname, './public');
-app.use(express.static(publicDirectory));
+// Define the routes for the application
+// '/' route is handled by the 'pages' module
+app.use('/', require('./routes/pages'));
 
-// get pages.
-app.get("/", (req, res) => {
-    res.sendFile( path.join(__dirname, "./views", "index.html")); 
-});
-app.get("/instruction", (req, res) => {
-    res.sendFile(path.join(__dirname, "./views", "instruction.html")); 
-});
-app.get("/mentor", (req, res) => {
-    res.sendFile(path.join(__dirname, "./views", "mentor.html")); 
-});
-app.get("/signup", (req, res) => {
-    res.sendFile(path.join(__dirname, "./views", "signup.html")); 
-});
-app.get("/login", (req, res) => {
-    res.sendFile(path.join(__dirname, "./views", "login.html")); 
-});
-app.get("/about", (req, res) => {
-    res.sendFile(path.join(__dirname, "./views", "about.html")); 
-});
-app.get("/createQuiz", (req, res) => {
-    res.sendFile(path.join(__dirname, "./views", "createQuiz.html")); 
-});
-app.get("/editQuiz", (req, res) => {
-    res.sendFile(path.join(__dirname, "./views", "editQuiz.html")); 
-});
-app.get("/student", (req, res) => {
-    res.sendFile(path.join(__dirname, "./views", "student.html")); 
-});
-// end of get pages.
+// '/auth' route is handled by the 'auth' module
+app.use('/auth', require('./routes/auth'));
 
-app.listen(3000, () => {
-    console.log("Server is running on 3000");
+
+app.listen(5000, () => {
+    console.log("Server is running on 5000");
 });
