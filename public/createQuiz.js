@@ -44,7 +44,7 @@ const defaultTimeLimit = 60;
 function addQuestion(type) {
     let questionHtml = '';
 
-    if (type === 'trueFalse') {
+    if (type === 'TF') {
         questionHtml = `
             <div class="card mb-3 question" style="display: none;">
                 <div class="card-body">
@@ -63,7 +63,7 @@ function addQuestion(type) {
                     <button type="button" class="btn btn-danger" onclick="deleteQuestion(this)">Delete Question</button>
                 </div>
             </div>`;
-    } else if (type === 'multipleChoice') {
+    } else if (type === 'MCQ') {
         questionHtml = `
             <div class="card mb-3 question" style="display: none;">
                 <div class="card-body">
@@ -116,11 +116,11 @@ function finishQuiz() {
 
         questionDivs.forEach(div => {
             const questionText = div.querySelector('.questionText').value;
-            const type = div.querySelector('.correctAnswer').options.length === 2 ? 'trueFalse' : 'multipleChoice';
+            const type = div.querySelector('.correctAnswer').options.length === 2 ? 'TF' : 'MCQ';
 
             let options, correctAnswer;
 
-            if (type === 'trueFalse') {
+            if (type === 'TF') {
                 options = ['True', 'False'];
                 correctAnswer = div.querySelector('.correctAnswer').value;
             } else {

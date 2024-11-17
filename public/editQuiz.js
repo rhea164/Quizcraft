@@ -168,11 +168,11 @@ function saveQuiz() {
 
   questionDivs.forEach(div => {
     const questionText = div.querySelector('.questionText').value;
-    const type = div.querySelector('.correctAnswer').options.length === 2 ? 'trueFalse' : 'multipleChoice';
+    const type = div.querySelector('.correctAnswer').options.length === 2 ? 'TF' : 'MCQ';
 
     let options, correctAnswer;
 
-    if (type === 'trueFalse') {
+    if (type === 'TF') {
       options = ['True', 'False'];
       correctAnswer = div.querySelector('.correctAnswer').value;
     } else {
