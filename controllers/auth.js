@@ -19,7 +19,7 @@ exports.login = async (req, res) => {
 
     // Check if both email and password are provided
     if (!email || !password) {
-      return res.status(400).render('/login', {
+      return res.status(400).sendFile('/login', {
         message: 'Please provide an email and password' // Error message if any field is missing
       });
     }
@@ -30,7 +30,7 @@ exports.login = async (req, res) => {
 
       // Check if the user exists and if the password matches the hashed password
       if (!results || !(await bcrypt.compare(password, results[0].password))) {
-        res.status(401).render('/login', {
+        res.status(401).sendFile('/login', {
           message: 'Email or Password is incorrect' // Error message for invalid credentials
         });
       } else {
@@ -76,14 +76,14 @@ exports.signup = (req, res) => {
 
     if (results.length > 0) {
         // If the email already exists, render the register page with an error message
-        return res.render('/signup', {
+        return res.sendFile('/signup', {
         message: 'This email is already in use. Try again.'
       });
     } 
     
     else if (password !== passwordConfirm) {
         // Check if passwords match; show an error if they don't
-        return res.render('/signup', {
+        return res.sendFile('/signup', {
         message: 'Passwords do not match. Try again.'
       });
     }
@@ -100,7 +100,7 @@ exports.signup = (req, res) => {
         console.log(error); // Log any database insertion errors
       } else {
         console.log(results); // Log the results of the insertion
-        return res.render('/login.html', {
+        return res.sendFile('/login', {
           message: 'User registered successfully! Login now!' // Success message after registration
         });
       }
