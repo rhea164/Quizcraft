@@ -63,17 +63,20 @@ function getUsername() {
         {
             question: "What is the output of `console.log(typeof null)`?",
             options: ["object", "null", "undefined", "number"],
-            answer: "object"
+            answer: "object",
+            type:"MCQ"
         },
         {
             question: "Which company developed JavaScript?",
             options: ["Netscape", "Microsoft", "Google", "Apple"],
-            answer: "Netscape"
+            answer: "Netscape",
+            type:"MCQ"
         },
         {
             question: "What does `NaN` stand for?",
             options: ["Not a Number", "Not a Null", "Not a Name", "Not a Node"],
-            answer: "Not a Number"
+            answer: "Not a Number",
+            type:"MCQ"
         },
     ]
   };
