@@ -1,0 +1,22 @@
+[
+    {
+        "question": "What is the capital of France?",
+        "options": ["A. Berlin", "B. Madrid", "C. Paris", "D. Rome"],
+        "correctAnswer": "C. Paris"
+    },
+    {
+        "question": "What is 5 + 7?",
+        "options": ["A. 10", "B. 12", "C. 13", "D. 14"],
+        "correctAnswer": "B. 12"
+    },
+    {
+        "question": "Which planet is known as the Red Planet?",
+        "options": ["A. Earth", "B. Mars", "C. Jupiter", "D. Saturn"],
+        "correctAnswer": "B. Mars"
+    },
+    {
+        "question": "Who wrote 'To Kill a Mockingbird'?",
+        "options": ["A. Harper Lee", "B. J.K. Rowling", "C. Mark Twain", "D. Jane Austen"],
+        "correctAnswer": "A. Harper Lee"
+    }
+]
