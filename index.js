@@ -54,6 +54,7 @@ app.get("/api/quiz/takequiz", (req, res) => {
 app.post("/api/quiz/create", (req, res) => {
     console.log(req);
     const { username, questions, title, code, timeLimit } = req.body; 
+    
     var query = `INSERT INTO (quiz_id, username, title, time_limit)QUIZZES VALUES (${code}, ${username}, ${title}, ${timeLimit} )`;
     db.query(query, (error, result) =>{
         if(error){
@@ -67,6 +68,16 @@ app.post("/api/quiz/create", (req, res) => {
     questions.array.forEach(element => {
         var questionQuery = `INSERT INTO (QUIZ_CODE, QUESTION_TEXT, QUESTION_TYPE) QUESTIONS VALUES(${code}, ${element.question}, ${element.type})`;
         db.query(questionQuery, (error, result) =>{
+            if(error){
+                console.log("couldn't insert quiz");
+            } else {
+                console.log(result);
+            }
+        });
+    });
+    questions.array.forEach(element => {
+        var optionsQuery = `INSERT INTO ( QUESTION_TEXT, OPTION_TEXT, QUESTION_TYPE, IS_CORRECT) OPTIONS VALUES( ${element.question}, ${element.t})`;
+        db.query(optionsQuery, (error, result) =>{
             if(error){
                 console.log("couldn't insert quiz");
             } else {
