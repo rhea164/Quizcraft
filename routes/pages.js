@@ -46,6 +46,9 @@ router.get("/editQuiz", (req, res) => {
 router.get("/student", (req, res) => {
     res.sendFile(path.join(__dirname, "../views", "student.html")); 
 });
+router.get("/quiz", (req, res) => {
+    res.sendFile(path.join(__dirname, "../views", "quiz.html")); 
+});
 // end of get pages
 
 module.exports = router;
