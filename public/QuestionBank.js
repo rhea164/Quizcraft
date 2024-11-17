@@ -43,7 +43,7 @@ const loadQuizzes = () => {
   
   // Export functions for use in other files
   export { generateQuizCode, addQuiz, getQuizByCode };
-  
+
   // Add example quiz
   const exampleQuiz = {
     code: "12345",

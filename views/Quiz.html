@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz with Reveal.js</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/theme/white.min.css">
+    <style>
+        /* Styling feedback */
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .correct { color: green; }
+        .incorrect { color: red; }
+        #timer {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides" id="quizSlides"></div>
+    </div>
+    <div id="timer">Time Left: 60s</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/reveal.min.js"></script>
+    <script type="module" src="../public/quiz.js"></script>
+</body>
+</html>
