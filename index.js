@@ -44,7 +44,18 @@ db.connect((error) => {
     }
 });
 
-app.get("")
+app.get("/api/quiz/takequiz", (req, res) => {
+    console.log(req);
+});
+
+app.post("/api/quiz/create", (req, res) => {
+    console.log(req);
+});
+
+app.get("/api/quiz/home", (req, res) => {
+    console.log(req);
+});
+
 // Define the routes for the application
 // '/' route is handled by the 'pages' module
 app.use('/', require('./routes/pages'));
