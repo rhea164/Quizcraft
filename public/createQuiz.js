@@ -1,5 +1,6 @@
 import { generateQuizCode, addQuiz } from './QuestionBank.js';
 
+console.log("createQuiz.js");
 let username=sessionStorage.getItem('username');
 
 // document.addEventListener('DOMContentLoaded', () => {
