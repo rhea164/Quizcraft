@@ -1,5 +1,5 @@
-// Import the `loadQuizzes` function from QuestionBank.js
-import { loadQuizzes } from './QuestionBank.js';
+// Import the `loadQuizzes` function from QuizManager.js
+import { loadQuizzes, deleteQuiz } from './QuizManager.js';
 
 // Check if the user is logged in
 const username = sessionStorage.getItem('username');
@@ -54,12 +54,7 @@ function displayQuizzes() {
     });
   });
 
-  function deleteQuiz(quizCode) {
-    console.log('Deleting quiz with code:', quizCode);
-    delete quizzes[quizCode];
-    // saveQuizzes(quizzes);
-    displayQuizzes();
-  };
+  
 
   // Add click event to all delete buttons
   document.querySelectorAll('.delete-btn').forEach(button => {

@@ -1,5 +1,5 @@
-// Import the `loadQuizzes` and `saveQuizzes` functions from QuestionBank.js
-import { loadQuizzes, addQuiz } from './QuestionBank.js';
+// Import the `loadQuizzes` and `saveQuizzes` functions from QuizManager.js
+import { loadQuizzes, addQuiz } from './QuizManager.js';
 import { addQuestion } from './createQuiz.js';
 
 

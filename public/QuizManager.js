@@ -1,4 +1,4 @@
-// QuestionBank.js
+// QuizManager.js
 
 // Store quizzes in sessionStorage to persist data
 const loadQuizzes = () => {
@@ -42,6 +42,13 @@ function getUsername() {
     console.log('Updated quizzes:', quizzes);
     return true;
   }
+
+  function deleteQuiz(quizCode) {
+    console.log('Deleting quiz with code:', quizCode);
+    delete quizzes[quizCode];
+    // saveQuizzes(quizzes);
+    displayQuizzes();
+  };
   
   // Function to fetch a quiz by its code
   function getQuizByCode(quizCode) {
@@ -51,7 +58,7 @@ function getUsername() {
   }
   
   // Export functions for use in other files
-  export { generateQuizCode, addQuiz, getQuizByCode };
+  export { generateQuizCode, addQuiz, getQuizByCode, deleteQuiz };
 
   // Add example quiz
   const exampleQuiz = {
@@ -83,4 +90,4 @@ function getUsername() {
 
   addQuiz(exampleQuiz.username,exampleQuiz.code, exampleQuiz.title, exampleQuiz.questions,exampleQuiz.timeLimit);
 
-  export { loadQuizzes, saveQuizzes, getQuizByCode };
+  export { loadQuizzes, saveQuizzes };

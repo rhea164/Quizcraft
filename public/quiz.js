@@ -1,4 +1,4 @@
-import { getQuizByCode } from "./QuestionBank";
+import { getQuizByCode } from "./QuizManager";
 
 let score = 0;
 let totalQuestions = 0;
