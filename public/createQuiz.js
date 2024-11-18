@@ -1,4 +1,4 @@
-import { generateQuizCode, addQuiz } from './QuestionBank.js';
+import { generateQuizCode, addQuiz } from './QuizManager.js';
 
 console.log("createQuiz.js");
 let username=sessionStorage.getItem('username');
