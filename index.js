@@ -137,10 +137,10 @@ app.get("/api/quiz/home", (req, res) => {
 
                         if (questions.length === questionResults.length){
                             quizzes.push({
+                                username: quiz.USERNAME,
                                 code: quiz.QUIZ_CODE,
                                 title: quiz.TITLE,
                                 timeLimit: quiz.TIME_LIMIT,
-                                username: quiz.USERNAME,
                                 questions: questions
                             });
 
