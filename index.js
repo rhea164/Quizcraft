@@ -112,8 +112,8 @@ app.get("/api/quiz/home", (req, res) => {
     })
 
     STILL WORK IN PROGRESS!
-/*
-});
+
+}); */
 
 // Define the routes for the application
 // '/' route is handled by the 'pages' module
