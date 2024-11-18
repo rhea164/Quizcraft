@@ -79,7 +79,7 @@ app.post("/api/quiz/create", (req, res) => {
         var optionsQuery = `INSERT INTO ( QUESTION_TEXT, OPTION_TEXT, QUESTION_TYPE, IS_CORRECT) OPTIONS VALUES( ${element.question}, ${element.t})`;
         db.query(optionsQuery, (error, result) =>{
             if(error){
-                console.log("couldn't insert quiz");
+                console.log("Couldn't insert the quiz.");
             } else {
                 console.log(result);
             }
@@ -87,8 +87,32 @@ app.post("/api/quiz/create", (req, res) => {
     });
 });
 
+/*
 app.get("/api/quiz/home", (req, res) => {
     console.log(req);
+
+    const username = req.username;
+    const quizquery = 'SELECT * FROM QUIZZES WHERE USERNAME = ?';
+    db.query(quizquery, [username], (err, quizres) => {
+        if (err) {
+            console.log("Error fetching the quizzes.");
+        }
+
+        if (quizres.length === 0){
+            console.log("No quizzes found.");
+        }
+
+        const quizzes = [];
+
+        quizres.forEach(quizres, index) => {
+            const quizCode = quiz.QUIZCODE;
+
+            const 
+        }
+    })
+
+    STILL WORK IN PROGRESS!
+/*
 });
 
 // Define the routes for the application
@@ -97,7 +121,6 @@ app.use('/', require('./routes/pages'));
 
 // '/auth' route is handled by the 'auth' module
 app.use('/auth', require('./routes/auth'));
-
 
 app.listen(5000, () => {
     console.log("Server is running on 5000");
