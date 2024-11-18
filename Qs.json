@@ -10,6 +10,11 @@
         "correctAnswer": "B. 12"
     },
     {
+        "question": "Are you a person",
+        "options": ["True", "False"],
+        "correctAnswer": "True"
+    },
+    {
         "question": "Which planet is known as the Red Planet?",
         "options": ["A. Earth", "B. Mars", "C. Jupiter", "D. Saturn"],
         "correctAnswer": "B. Mars"

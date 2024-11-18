@@ -7,28 +7,165 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/reveal.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/theme/white.min.css">
     <style>
-        /* Styling feedback */
-        .feedback {
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        .correct { color: green; }
-        .incorrect { color: red; }
         #timer {
             position: fixed;
             top: 10px;
             right: 10px;
-            font-size: 1.5em;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 1.2em;
+        }
+
+        button {
+            background-color: #4a90e2; /* Modern blue color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        button:hover {
+            background-color: #3a7ac8; /* Darker shade for hover effect */
+        }
+
+        button:disabled {
+            background-color: #adb5bd; /* Soft gray for disabled buttons */
+            cursor: not-allowed;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            font-size: 1.1em;
+        }
+
+        .feedback.correct {
+            color: green;
+        }
+
+        .feedback.incorrect {
             color: red;
         }
     </style>
 </head>
 <body>
     <div class="reveal">
-        <div class="slides" id="quizSlides">
-            
-        </div>
+        <div class="slides" id="quizSlides"></div>
     </div>
+    <div id="timer"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/reveal.min.js"></script>
+    <script>
+        let score = 0;
+        let totalQuestions = 0;
+        let timeLeft = 60;
+        let timerInterval;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadQuestions();
+        });
+
+        async function loadQuestions() {
+            try {
+                const response = await fetch('/Qs.json');
+                if (!response.ok) throw new Error('Failed to load questions');
+                
+                const questions = await response.json();
+                const slidesContainer = document.getElementById('quizSlides');
+                totalQuestions = questions.length; // Set total questions count for percentage calculation
+
+                questions.forEach((item, index) => {
+                    const slide = document.createElement('section');
+                    slide.innerHTML = `
+                        <h2>Question ${index + 1} of ${totalQuestions}</h2>
+                        <p>${item.question}</p>
+                        <div id="options-${index}">
+                            ${item.options.map(option => `
+                                <button onclick="checkAnswer('${option}', '${item.correctAnswer}', 'feedback-${index}', this)">
+                                    ${option}
+                                </button>
+                            `).join('')}
+                        </div>
+                        <p id="feedback-${index}" class="feedback"></p>
+                    `;
+                    slidesContainer.appendChild(slide);
+                });
+
+                // Append final slide to show the percentage score
+                const finalSlide = document.createElement('section');
+                finalSlide.innerHTML = `
+                    <h2>Quiz Complete!</h2>
+                    <p id="scoreDisplay">Your score: 0%</p>
+                `;
+                slidesContainer.appendChild(finalSlide);
+
+                // Initialize Reveal.js after loading questions
+                Reveal.initialize({
+                    hash: true,
+                    slideNumber: true,
+                    controls: true,
+                    progress: true,
+                    transition: 'slide'
+                });
+
+                // Start the timer
+                startTimer();
+            } catch (error) {
+                console.error("Error loading questions:", error);
+            }
+        }
+
+        // Check if the selected answer is correct
+        function checkAnswer(selectedOption, correctAnswer, feedbackElementId, buttonElement) {
+            const feedbackElement = document.getElementById(feedbackElementId);
+
+            // Prevent further clicks on options after an answer has been selected
+            if (feedbackElement.textContent) return;
+
+            if (selectedOption === correctAnswer) {
+                feedbackElement.textContent = "Correct!";
+                feedbackElement.classList.add("correct");
+                feedbackElement.classList.remove("incorrect");
+                score++;
+            } else {
+                feedbackElement.textContent = "Incorrect!";
+                feedbackElement.classList.add("incorrect");
+                feedbackElement.classList.remove("correct");
+            }
+
+            // Disable all buttons for the current question after an answer is selected
+            buttonElement.parentNode.querySelectorAll('button').forEach(button => button.disabled = true);
+
+            // If this is the last question, end the quiz and show the score
+            if (Reveal.getCurrentSlide().nextElementSibling === null) {
+                endQuiz();
+            }
+        }
+
+        // Start the timer and end the quiz when time runs out
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = `Time Left: ${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    endQuiz();
+                }
+            }, 1000);
+        }
+
+        // End the quiz by calculating the score percentage and showing it on the final slide
+        function endQuiz() {
+            clearInterval(timerInterval);
+            const scorePercentage = Math.round((score / totalQuestions) * 100);
+            document.getElementById('scoreDisplay').textContent = `Your score: ${scorePercentage}%`;
+            Reveal.slide(Reveal.getTotalSlides() - 1);  // Move to the final slide
+
+            // Disable back navigation
+            Reveal.configure({ controls: false });
+        }
+    </script>
     <div id="timer">Time Left: 60s</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/reveal.min.js"></script>
