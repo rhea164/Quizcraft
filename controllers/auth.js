@@ -28,7 +28,7 @@ exports.login = async (req, res) => {
     }
 
     // Query the database for a user with the provided email
-    db.query('SELECT * FROM mentors WHERE email = ?', [email], async (error, results) => {
+    db.query('SELECT * FROM mentors WHERE EMAIL = ?', [email], async (error, results) => {
       console.log(results);
 
       // Check if the user exists and if the password matches the hashed password

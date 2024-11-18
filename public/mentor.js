@@ -5,13 +5,14 @@ import { loadQuizzes, deleteQuiz } from './QuizManager.js';
 const username = sessionStorage.getItem('username');
 if (!username) {
   alert('You are not logged in. Redirecting to login page.');
-  window.location.href = './login.html';
+  window.location.href = './login';
 } else {
   document.getElementById('mentorWelcome').innerText = `Welcome, ${username}!`;
 }
 
 // Function to display quizzes on the Mentor page
 function displayQuizzes() {
+  console.log("amr");
   const quizzes = loadQuizzes();
   const tableBody = document.querySelector('tbody');
 
@@ -50,7 +51,7 @@ function displayQuizzes() {
   document.querySelectorAll('.edit-btn').forEach(button => {
     button.addEventListener('click', (event) => {
       const quizCode = event.target.getAttribute('data-code');
-      window.location.href = `editQuiz.html?code=${quizCode}`;
+      window.location.href = `/editQuiz?code=${quizCode}`;
     });
   });
 

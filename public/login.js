@@ -9,7 +9,7 @@ document.getElementById('loginBtn').addEventListener('click', () => {
       sessionStorage.setItem('username', username);
 
       // Redirect user to mentor screen
-      window.location.href = './mentor.html';
+      window.location.href = './mentor';
     } else {
       alert('Please fill in all fields.');
     }
