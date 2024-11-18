@@ -83,4 +83,4 @@ function getUsername() {
 
   addQuiz(exampleQuiz.username,exampleQuiz.code, exampleQuiz.title, exampleQuiz.questions,exampleQuiz.timeLimit);
 
-  export { loadQuizzes, saveQuizzes };
+  export { loadQuizzes, saveQuizzes, getQuizByCode };

@@ -1,3 +1,5 @@
+import { getQuizByCode } from "./QuestionBank";
+
 let score = 0;
 let totalQuestions = 0;
 let timeLeft = 60;
@@ -17,13 +19,12 @@ function getQuizCodeFromURL() {
   async function loadQuestions() {
     try {
       const quizCode = getQuizCodeFromURL();
-      const quizzes = JSON.parse(sessionStorage.getItem('quizzes')) || {};
+      const quiz = getQuizByCode(quizCode);
   
-      if (!quizzes[quizCode]) {
+      if (!quiz) {
         throw new Error('Quiz not found. Please check the quiz code.');
       }
   
-      const quiz = quizzes[quizCode];
       timeLeft = quiz.timeLimit * 60;
       console.log('Quiz:', quiz);
       const questions = quiz.questions;
