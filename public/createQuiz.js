@@ -161,6 +161,7 @@ function finishQuiz() {
 // Make functions available globally
 
 window.deleteQuestion = deleteQuestion;
+window.addQuestion = addQuestion;
 
 
 

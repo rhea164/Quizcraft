@@ -10,25 +10,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const quizForm = document.getElementById('qForm');
   const addQuestionBtn = document.getElementById('addQBtn');
   const cancelBtn = document.getElementById('cancelBtn');
+  const questionType = document.getElementById('questionType');
+
+   // Add the event listener
+   addQuestionBtn.addEventListener('click', () => {
+    console.log('add question button clicked');
+    const type = questionType.value;
+    console.log(type);
+    addQuestion(type);
+  });
 
   // Add event listener for the cancel button
   cancelBtn.addEventListener('click', () => {
     window.location.href = 'mentor.html'; // Redirect to mentor.html
   });
 
-  addQuestionBtn.addEventListener('click', addQuestionHandler);
+  // addQuestionBtn.addEventListener('click', addQuestionHandler);
 
   quizForm.addEventListener('submit',submitQuizHandler );
   }
 
-  // Add the event listener
+ 
  
 });
 
-function addQuestionHandler() {
-  const type = questionType.value;
-  addQuestion(type);
-}
+
 
 function submitQuizHandler(event) {
   event.preventDefault();
