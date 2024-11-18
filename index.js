@@ -145,7 +145,7 @@ app.get("/api/quiz/home", (req, res) => {
                             });
 
                             if (quizzes.length === quizResults.length) {
-                                return quizres.json(quizzes);
+                                return res.json(quizzes);
                             }
                         }
                     })
