@@ -75,6 +75,7 @@ app.post("/api/quiz/create", (req, res) => {
             }
         });
     });
+
     questions.array.forEach(element => {
         var optionsQuery = `INSERT INTO ( QUESTION_TEXT, OPTION_TEXT, QUESTION_TYPE, IS_CORRECT) OPTIONS VALUES( ${element.question}, ${element.t})`;
         db.query(optionsQuery, (error, result) =>{
@@ -87,10 +88,9 @@ app.post("/api/quiz/create", (req, res) => {
     });
 });
 
-/*
+
 app.get("/api/quiz/home", (req, res) => {
     console.log(req);
-
     const username = req.username;
     const quizquery = 'SELECT * FROM QUIZZES WHERE USERNAME = ?';
     db.query(quizquery, [username], (err, quizres) => {
@@ -104,16 +104,56 @@ app.get("/api/quiz/home", (req, res) => {
 
         const quizzes = [];
 
-        quizres.forEach(quizres, index) => {
-            const quizCode = quiz.QUIZCODE;
+        quizres.forEach(quiz => {
+            const quizCode = quiz.QUIZ_CODE;
 
-            const 
-        }
+            const questionQuery = 'SELECT * FROM QUESTIONS WHERE QUIZ_CODE = ?';
+
+            db.query(questionQuery, [quizCode], (err, questionResults) => {
+                if (err){
+                    console.log ("Error getting questions.");
+                }
+
+                const questions = [];
+
+                questionResults.forEach((question) => {
+                    const optionsQuery = 'SELECT * FROM OPTIONS WHERE QUESTION_TEXT = ?';
+
+                    db.query(optionsQuery, question.QUESTION_TEXT, (err, optionResults) => {
+
+                        if (err){
+                            console.log("Error getting options.");
+                        }
+
+                        const options  = optionResults.map(option => option.OPTION_TEXT);
+                        const answer = optionResults.find(option => option.IS_CORRECT)?.OPTION_TEXT || '';
+
+                        questions.push({
+                            question: question.QUESTION_TEXT,
+                            options: options,
+                            answer: answer,
+                            type: question.QUESTION_TYPE
+                        });
+
+                        if (questions.length === questionResults.length){
+                            quizzes.push({
+                                username: quiz.USERNAME,
+                                code: quiz.QUIZ_CODE,
+                                title: quiz.TITLE,
+                                timeLimit: quiz.TIME_LIMIT,
+                                questions: questions
+                            });
+
+                            if (quizzes.length === quizResults.length) {
+                                return quizres.json(quizzes);
+                            }
+                        }
+                    })
+                })
+            })
+        }) 
     })
-
-    STILL WORK IN PROGRESS!
-
-}); */
+}); 
 
 // Define the routes for the application
 // '/' route is handled by the 'pages' module
