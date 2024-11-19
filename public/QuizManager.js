@@ -2,9 +2,9 @@
 
 // Store quizzes in sessionStorage to persist data
 const loadQuizzes = () => {
-  const stored = null;
+  let stored = null;
     fetch("http://localhost:5000/api/quiz/home",
-      { method: 'GET',headers: {'Content-Type': 'application/json',}})
+      { method: 'GET',headers: {'Content-Type': 'application/json',}, body: JSON.stringify({username: getUsername()})})
       .then(response => response.json())
       .then(data => {stored = data})
       .catch(error => console.log("MENTOR HOME PAGE ERROR:" + error));
@@ -17,7 +17,8 @@ const loadQuizzes = () => {
 }
 
 function getUsername() {
-    return sessionStorage.getItem('username');
+  const userName = Integer.parseInt(sessionStorage.getItem('username')); 
+  return userName;
 }
 
   let quizzes = loadQuizzes();
@@ -45,7 +46,8 @@ function getUsername() {
 
   function deleteQuiz(quizCode) {
     console.log('Deleting quiz with code:', quizCode);
-    fetch("http://localhost:5000/api/quiz/delete", {method: 'DELETE'})
+    fetch("http://localhost:5000/api/quiz/delete",
+      {method: 'DELETE', body: JSON.stringify({code: quizCode})})
     .then(res => console.log(res.status));
     displayQuizzes();
   };
@@ -54,7 +56,7 @@ function getUsername() {
   function getQuizByCode(quizCode) {
     const quiz = null;
     fetch("http://localhost:5000/api/quiz/takequiz",
-       { method: 'GET',headers: {'Content-Type': 'application/json',}})
+       { method: 'GET',headers: {'Content-Type': 'application/json',}, body: JSON.stringify({code: quizCode})})
        .then(response => response.json())
        .then(data => {quiz = data})
        .catch(error => console.log("STUDENT CODE ERROR:" + error));
@@ -64,7 +66,7 @@ function getUsername() {
   // Export functions for use in other files
   export { generateQuizCode, addQuiz, getQuizByCode, deleteQuiz };
 
-  // Add example quiz
+  /* Add example quiz
   const exampleQuiz = {
     username: "mike",
     code: "12345",
@@ -93,5 +95,5 @@ function getUsername() {
   };
 
   addQuiz(exampleQuiz.username,exampleQuiz.code, exampleQuiz.title, exampleQuiz.questions,exampleQuiz.timeLimit);
-
+ */
   export { loadQuizzes };
