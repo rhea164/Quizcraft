@@ -10,6 +10,6 @@ document.querySelector('form').addEventListener('submit', (event) => {
     if (quiz == {}) {
       alert("Invalid quiz code. Please try again.");
     } else {
-        
+        window.location.href = '/Quiz?code=${quizCode}';
     }
   });
