@@ -24,8 +24,8 @@ function getUsername() {
   
   // Function to generate a unique quiz code (6-digit random code)
   function generateQuizCode() {
-    return Math.random().toString(36).substring(2, 8).toUpperCase();
-  }
+    return Math.floor(100000 + Math.random() * 900000); // Generates a random 6-digit number
+}
   
   // Function to add a new quiz to the question bank
   function addQuiz(username,quizCode, quizTitle, questions,timeLimit) {
