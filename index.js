@@ -4,7 +4,7 @@ const mysql = require("mysql");
 const dotenv = require("dotenv"); 
 const path = require("path"); 
 const cookieParser = require('cookie-parser'); 
-const { error } = require("console");
+const { error, time } = require("console");
 const port = 5000;
 
 
@@ -46,19 +46,18 @@ db.connect((error) => {
     }
 });
 
-
-
-app.get("/api/quiz/takequiz/", (req, res) => {
+app.post("http://localhost:5000/api/quiz/takequiz", (req, res) => {
     const quizCode = req.query.code;
 
     if(!quizCode){
         console.log("Quiz code is required!");
-        return res.status(200).json({});
+        return res.status(500).json({});
     }
 
     const quizQuery = 'SELECT * FROM QUIZZES WHERE QUIZ_CODE = ?';
 
     db.query(quizQuery, [quizCode], (err, quizResults) => {
+
         if (err) {
             console.log("Error fetching the quiz.");
             return res.status(500).json({});
@@ -82,12 +81,13 @@ app.get("/api/quiz/takequiz/", (req, res) => {
             const questions = [];
             let questionsProcessed = 0;
 
-            questionResults.forEach((question) => {
+            for(let question in questionResults)  {
                 const optionsQuery = 'SELECT * FROM OPTIONS WHERE QUESTION_TEXT = ?';
 
                 db.query(optionsQuery, [question.QUESTION_TEXT], (err, optionResults) => {
                     if (err) {
-                        console.log("Error fetching options.")
+                        console.log("Error fetching options.");
+                        return res.status(500).json({});
                     }
 
                     const options = optionResults.map(opt => opt.OPTION_TEXT);
@@ -112,27 +112,64 @@ app.get("/api/quiz/takequiz/", (req, res) => {
                         });
                     }
                 });
-            });
+            };
         });
     });
 });
 
-app.post("/api/quiz/create", (req, res) => {
-    console.log(req);
+// creates/update a quiz
+app.post("http://localhost:5000/api/quiz/create", (req, res) => {
     const { username, questions, title, code, timeLimit } = req.body; 
-    
-    var query = `INSERT INTO (quiz_id, username, title, time_limit)QUIZZES VALUES (${code}, ${username}, ${title}, ${timeLimit} )`;
-    db.query(query, (error, result) =>{
+
+    var query = `SELECT * FROM Questions WHERE Quiz_CODE = ?`;
+   // deletes full quiz. if it already exists
+    db.query(query, [code], (error, result) => {
+        if(result.length > 0){
+            // removes options
+            for(let question in questions) {
+                optionsQuery = `DELETE * FROM OPTIONS WHERE Question_CODE = ?`;
+                db.query(optionsQuery, [question.QUESTION_TEXT], (error, result) => {
+                    if(error){
+                        console.log(" couldn't delete options");
+                    } else {
+                        console.log("options removed succefully ");
+                    }
+                });
+            };
+            // removes questions 
+            var query = `DELETE * FROM Questions WHERE Quiz_CODE = ?`;
+            db.query(query, [code], (error, result) => {
+                if(error){
+                    console.log(" couldn't delete questions");
+                } else {
+                    console.log("questions removed succefully ");
+                }
+            });
+            // removes quiz. 
+            var query = `DELETE * FROM Quizzes WHERE Quiz_CODE = ?`;
+            db.query(query, [code], (error, result) => {
+                if(error){
+                    console.log(" couldn't delete quiz");
+                } else {
+                    console.log("quiz removed succefully ");
+                }
+            });
+        }
+    });
+
+    console.log(code + username + title + timeLimit);
+    var query = `INSERT INTO QUIZZES (quiz_code, USERNAME, title, time_limit) VALUES (${code}, ${username}, ${title}, ${timeLimit} );`;
+    db.query(query,  (error, result) =>{
         if(error){
-            console.log("couldn't insert quiz")
+            console.log("couldn't insert quiz 1 " + error)
         } else {
             console.log(result);
         }
     });
 
     // inserting questions.
-    questions.array.forEach(element => {
-        var questionQuery = `INSERT INTO (QUIZ_CODE, QUESTION_TEXT, QUESTION_TYPE) QUESTIONS VALUES(${code}, ${element.question}, ${element.type})`;
+    for(let element in questions) {
+        var questionQuery = `INSERT INTO  QUESTIONS (QUIZ_CODE, QUESTION_TEXT, QUESTION_TYPE) VALUES(${code}, ${element.question}, ${element.type});`;
         db.query(questionQuery, (error, result) =>{
             if(error){
                 console.log("couldn't insert quiz");
@@ -140,28 +177,65 @@ app.post("/api/quiz/create", (req, res) => {
                 console.log(result);
             }
         });
-    });
+        for(let answer in element){
+            var optionsQuery = `INSERT INTO  OPTIONS ( QUESTION_TEXT, OPTION_TEXT, QUESTION_TYPE, IS_CORRECT) VALUES( ${element.question}, ${answer}, ${element.type}, ${answer === element.answer})`;
+              db.query(optionsQuery, (error, result) =>{
+              if(error){
+                  console.log("Error inserting options");
+              } else {
+                  console.log("added option");
+              }
+              });
+        };
 
-    questions.array.forEach(element => {
-        var optionsQuery = `INSERT INTO ( QUESTION_TEXT, OPTION_TEXT, QUESTION_TYPE, IS_CORRECT) OPTIONS VALUES( ${element.question}, ${element.t})`;
-        db.query(optionsQuery, (error, result) =>{
-            if(error){
-                console.log("Couldn't insert the quiz.");
-            } else {
-                console.log(result);
-            }
-        });
+    };
+});
+
+// delete quiz.
+app.delete("http://localhost:5000/api/quiz/delete", (req, res) => {
+    const code = req.body.code;
+    var query = `SELECT * FROM Questions WHERE Quiz_CODE = ?`;
+   
+    db.query(query, [code], (req, res) => {
+        // removes options
+        for(let question in req.body.questions) {
+            optionsQuery = `DELETE * FROM OPTIONS WHERE Question_CODE = ?`;
+            db.query(optionsQuery, [question.QUESTION_TEXT], (error, result) => {
+                if(error){
+                    console.log(" couldn't delete options");
+                } else {
+                    console.log("options removed succefully ");
+                }
+            });
+        };
+    });
+    // removes questions 
+    var query = `DELETE * FROM Questions WHERE Quiz_CODE = ?`;
+    db.query(query, [code], (error, result) => {
+        if(error){
+            console.log(" couldn't delete quiz");
+        } else {
+            console.log("quiz removed succefully ");
+        }
+    });
+    // removes quiz.
+    var query = `DELETE * FROM Quizzes WHERE Quiz_CODE = ?`;
+    db.query(query, [code], (error, result) => {
+        if(error){
+            console.log(" couldn't delete quiz");
+        } else {
+            console.log("quiz removed succefully ");
+        }
     });
 });
 
-
-app.get("/api/quiz/home/", (req, res) => {
+app.post("http://localhost:5000/api/quiz/home", (req, res) => {
     console.log(req);
-    const username = req.query.username; 
+    const username = req.body.username; 
 
     if (!username) {
         console.log("Please provide username!!");
-        return res.status(200).json({}); // empty JSON object sent back
+        return res.status(500).json({}); // empty JSON object sent back
     }
 
     const quizzesQuery = 'SELECT * FROM QUIZZES WHERE USERNAME = ?';
@@ -173,14 +247,14 @@ app.get("/api/quiz/home/", (req, res) => {
         }
 
         if (quizResults.length === 0) {
-            console.log("No quizzes found for this user.");
+            console.log("No quizzes found for this mentor.");
             return res.status(200).json({}); // empty JSON object sent back
         }
 
         const quizzes = []; 
         let processedQuizzes = 0;
 
-        quizResults.forEach((quiz) => {
+        for(let quiz in quizResults)  {
             const questionsQuery = 'SELECT * FROM QUESTIONS WHERE QUIZ_CODE = ?';
 
             db.query(questionsQuery, [quiz.QUIZ_CODE], (err, questionResults) => {
@@ -204,10 +278,10 @@ app.get("/api/quiz/home/", (req, res) => {
 
                     processedQuizzes++;
                     if (processedQuizzes === quizResults.length) {
-                        res.json(quizzes);
+                        return res.json(quizzes);
                     }
                 } else {
-                    questionResults.forEach((question) => {
+                    for(let question in questionResults)  {
                         const optionsQuery = 'SELECT * FROM OPTIONS WHERE QUESTION_TEXT = ?';
 
                         db.query(optionsQuery, [question.QUESTION_TEXT], (err, optionResults) => {
@@ -239,14 +313,14 @@ app.get("/api/quiz/home/", (req, res) => {
                                 processedQuizzes++;
 
                                 if (processedQuizzes === quizResults.length) {
-                                    res.json(quizzes);
+                                    return res.json(quizzes);
                                 }
                             }
                         });
-                    });
+                    };
                 }
             });
-        });
+        };
     });
 });
 
