@@ -61,7 +61,7 @@ if (!quizCode) {
 }
 
 // Load all quizzes from localStorage
-const quizzes = loadQuizzes();
+const quizzes = sessionStorage.getItem('quizzes');
 const quizData = quizzes[quizCode];
 console.log(quizData)
 

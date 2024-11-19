@@ -2,14 +2,64 @@
 
 // Store quizzes in sessionStorage to persist data
 const loadQuizzes = () => {
-  let stored = null;
     fetch("http://localhost:5000/api/quiz/home",
       { method: 'POST',headers: {'Content-Type': 'application/json',}, body: JSON.stringify({username: getUsername()})})
       .then(response => response.json())
-      .then(data => {stored = data})
-      .catch(error => console.log("MENTOR HOME PAGE ERROR:" + error));
-    
-    return stored ? JSON.parse(stored) : {};
+      .then(data => {
+        const quizzes = data;
+        console.log(quizzes);
+        sessionStorage.setItem("quizzes", quizzes);
+        const tableBody = document.querySelector('tbody');
+        // Clear the table body
+        tableBody.innerHTML = '';
+
+        // Check if there are any quizzes stored
+        if (Object.keys(quizzes).length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="4" class="text-center">No quizzes available</td></tr>`;
+          return;
+        }
+
+        // Loop through quizzes and create table rows
+        Object.values(quizzes).forEach((quiz) => {
+          const row = document.createElement('tr');
+
+          // Create table cells
+          row.innerHTML = `
+            <td>${quiz.title}</td>
+            <td>${quiz.questions.length}</td>
+            <td>${quiz.code}</td>
+            <td>${quiz.timeLimit} minutes</td>
+            <td>
+              <div class="d-flex  justify-content-around">
+              <button class="btn btn-primary edit-btn" data-code="${quiz.code}">Edit</button>
+              <button class="btn btn-danger delete-btn" data-code="${quiz.code}">Delete</button>
+              </div>
+            </td>
+          `;
+
+          // Append the row to the table body
+          tableBody.appendChild(row);
+        });
+
+        // Add click event to all edit buttons
+        document.querySelectorAll('.edit-btn').forEach(button => {
+          button.addEventListener('click', (event) => {
+            const quizCode = event.target.getAttribute('data-code');
+            window.location.href = `/editQuiz?code=${quizCode}`;
+          });
+        });
+
+        
+
+        // Add click event to all delete buttons
+        document.querySelectorAll('.delete-btn').forEach(button => {
+          button.addEventListener('click', (event) => {
+            const quizCode = event.target.getAttribute('data-code');
+            deleteQuiz(quizCode);
+          });
+        });
+      })
+    .catch(error => console.log("MENTOR HOME PAGE ERROR:" + error));
   };
   
   function setUsername(username) {
@@ -46,7 +96,7 @@ function getUsername() {
     fetch("http://localhost:5000/api/quiz/delete",
       {method: 'DELETE', body: JSON.stringify({code: quizCode})})
     .then(res => console.log(res.status));
-    displayQuizzes();
+    loadQuizzes();
   };
   
   // Function to fetch a quiz by its code
