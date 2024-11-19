@@ -47,8 +47,10 @@ db.connect((error) => {
 
 
 
-app.get("/api/quiz/takequiz/:code", (req, res) => {
-    const quizCode = req.params.code;
+app.get("/api/quiz/takequiz/", (req, res) => {
+    const quizCode = req.query.code;
+
+
 
     const quizQuery = 'SELECT * FROM QUIZZES WHERE QUIZ_CODE = ?';
 
@@ -148,17 +150,20 @@ app.get("/api/quiz/home/", (req, res) => {
 
     if (!username) {
         console.log("Please provide username!!");
+        return res.status(200).json({}); // empty JSON object sent back
     }
 
     const quizzesQuery = 'SELECT * FROM QUIZZES WHERE USERNAME = ?';
 
     db.query(quizzesQuery, [username], (err, quizResults) => {
         if (err) {
-            console.log("Error fetching quizzes:");
+            console.log("Error fetching quizzes.");
+            return res.status(500).json({}); // empty JSON object sent back
         }
 
         if (quizResults.length === 0) {
             console.log("No quizzes found for this user.");
+            return res.status(200).json({}); // empty JSON object sent back
         }
 
         const quizzes = []; 
@@ -170,6 +175,7 @@ app.get("/api/quiz/home/", (req, res) => {
             db.query(questionsQuery, [quiz.QUIZ_CODE], (err, questionResults) => {
                 if (err) {
                     console.log("Error fetching questions!");
+                    return res.status(500).json({}); // empty JSON object sent back
                 }
 
                 const questions = []; // To hold all questions for this quiz
@@ -196,6 +202,7 @@ app.get("/api/quiz/home/", (req, res) => {
                         db.query(optionsQuery, [question.QUESTION_TEXT], (err, optionResults) => {
                             if (err) {
                                 console.log("Error fetching options.");
+                                return res.status(500).json({}); // empty JSON object sent back
                             }
 
                             const options = optionResults.map((opt) => opt.OPTION_TEXT);
@@ -219,7 +226,7 @@ app.get("/api/quiz/home/", (req, res) => {
                                 });
 
                                 processedQuizzes++;
-                                
+
                                 if (processedQuizzes === quizResults.length) {
                                     res.json(quizzes);
                                 }
