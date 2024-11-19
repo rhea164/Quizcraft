@@ -246,7 +246,7 @@ app.post("/api/quiz/home", (req, res) => {
             console.log("Error fetching quizzes.");
             return res.status(500).json({}); // empty JSON object sent back
         }
-
+        console.log("quiz " + quizResults);
         if (quizResults.length === 0) {
             console.log("No quizzes found for this mentor.");
             return res.status(200).json({}); // empty JSON object sent back
@@ -256,7 +256,7 @@ app.post("/api/quiz/home", (req, res) => {
         let processedQuizzes = 0;
 
         for(let index in quizResults)  {
-            const questionsQuery = 'SELECT (question_Text) FROM QUESTIONS WHERE QUIZ_CODE = ?';
+            const questionsQuery = 'SELECT * FROM QUESTIONS WHERE QUIZ_CODE = ?';
             console.log(quizResults[index]);
             console.log(quizResults[index].QUIZ_CODE);
             db.query(questionsQuery, [quizResults[index].QUIZ_CODE], (err, questionResults) => {
@@ -269,7 +269,6 @@ app.post("/api/quiz/home", (req, res) => {
                 let processedQuestions = 0;
          
                     for(let i in questionResults)  {
-                        console.log("Question:" + questionResults[i].QUESTION_TEXT);
                         const optionsQuery = 'SELECT * FROM OPTIONS WHERE QUESTION_TEXT = ?;';
 
                         db.query(optionsQuery, [questionResults[i].QUESTION_TEXT], (err, optionResults) => {
@@ -279,16 +278,19 @@ app.post("/api/quiz/home", (req, res) => {
                             }
                             console.log("options results: " + optionResults);
 
-                            const options = optionResults.map((opt) => opt.OPTION_TEXT); // do not work
+                            const options = optionResults.map((opt) => opt.OPTION_TEXT); 
                             console.log(options);
-                            const answer = optionResults.find((opt) => opt.IS_CORRECT)?.OPTION_TEXT || ''; // do not work
+                            
+                            const answer = optionResults.find((opt) => opt.IS_CORRECT)?.OPTION_TEXT || ''; 
                             console.log(answer);
+
                             questions.push({
                                 question: questionResults[i].QUESTION_TEXT,
-                                options: options,
+                                options:  options.map(String).join(" "),
                                 answer: answer,
                                 type: questionResults[i].QUESTION_TYPE,
                             });
+                            console.log(questions);
                             console.log("questions pushed");
                             processedQuestions++;
                             if (processedQuestions === questionResults.length) {
@@ -297,7 +299,7 @@ app.post("/api/quiz/home", (req, res) => {
                                     code: quizResults[index].QUIZ_CODE,
                                     title: quizResults[index].TITLE,
                                     timeLimit: quizResults[index].TIME_LIMIT,
-                                    questions: questions,
+                                    questions: questions[i],
                                 });
 
                                
@@ -305,6 +307,7 @@ app.post("/api/quiz/home", (req, res) => {
                               
                                 if (processedQuizzes === quizResults.length) {
                                   console.log("quizzes pushed ");
+                                  console.log(quizzes);
                                 return res.json(quizzes);
                             }
                         }
