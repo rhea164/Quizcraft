@@ -1,4 +1,4 @@
-import { getQuizByCode, loadQuizzes } from "./QuizManager.js";
+import { getQuizByCode } from "./QuizManager.js";
 
 document.querySelector('form').addEventListener('submit', (event) => {
     event.preventDefault();
