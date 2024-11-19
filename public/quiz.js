@@ -54,6 +54,7 @@ function getQuizCodeFromURL() {
       finalSlide.innerHTML = `
         <h2>Quiz Complete!</h2>
         <p id="scoreDisplay"></p>
+        <button id="return">Return To Home</button>
       `;
       slidesContainer.appendChild(finalSlide);
   
