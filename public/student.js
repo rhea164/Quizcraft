@@ -6,10 +6,9 @@ document.querySelector('form').addEventListener('submit', (event) => {
     const quizCode = document.getElementById('student-code').value.trim();
 
     const quiz = getQuizByCode(quizCode);
-    // Check if the quiz code exists in the quizzes object
-    if (JSON.stringify(quiz) == "{}") {
+    if (quiz == null) {
       alert("Invalid quiz code. Please try again.");
-    } else {
-        window.location.href = `/Quiz?code=${quizCode}`;
     }
+    if(quiz) window.location.href = `/Quiz?code=${quizCode}`;
+    
   });
