@@ -7,9 +7,9 @@ document.querySelector('form').addEventListener('submit', (event) => {
 
     const quiz = getQuizByCode(quizCode);
     // Check if the quiz code exists in the quizzes object
-    if (quiz == {}) {
+    if (JSON.stringify(quiz) == "{}") {
       alert("Invalid quiz code. Please try again.");
     } else {
-        window.location.href = '/Quiz?code=${quizCode}';
+        window.location.href = `/Quiz?code=${quizCode}`;
     }
   });

@@ -4,7 +4,7 @@
 const loadQuizzes = () => {
   let stored = null;
     fetch("http://localhost:5000/api/quiz/home",
-      { method: 'GET',headers: {'Content-Type': 'application/json',}, body: JSON.stringify({username: getUsername()})})
+      { method: 'POST',headers: {'Content-Type': 'application/json',}, body: JSON.stringify({username: getUsername()})})
       .then(response => response.json())
       .then(data => {stored = data})
       .catch(error => console.log("MENTOR HOME PAGE ERROR:" + error));
@@ -55,7 +55,7 @@ function getUsername() {
   function getQuizByCode(quizCode) {
     const quiz = null;
     fetch("http://localhost:5000/api/quiz/takequiz",
-       { method: 'GET',headers: {'Content-Type': 'application/json',}, body: JSON.stringify({code: quizCode})})
+       { method: 'POST',headers: {'Content-Type': 'application/json',}, body: JSON.stringify({code: quizCode})})
        .then(response => response.json())
        .then(data => {quiz = data})
        .catch(error => console.log("STUDENT CODE ERROR:" + error));
