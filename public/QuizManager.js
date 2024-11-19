@@ -7,6 +7,13 @@ const loadQuizzes = () => {
       .then(response => response.json())
       .then(data => {
         const quizzes = data;
+        for(let i in quizzes){
+          quizzes[i].questions = JSON.parse(quizzes[i].questions);
+          for(let j in quizzes[i].questions){
+            quizzes[i].questions[j].options = JSON.parse(quizzes[i].questions[j].options);
+          }
+        }
+        
         console.log(quizzes);
         sessionStorage.setItem("quizzes", quizzes);
         const tableBody = document.querySelector('tbody');
