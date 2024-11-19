@@ -19,8 +19,6 @@ const loadQuizzes = () => {
 function getUsername() {
   return sessionStorage.getItem('username'); 
 }
-
-  let quizzes = loadQuizzes();
   
   // Function to generate a unique quiz code (6-digit random code)
   function generateQuizCode() {
