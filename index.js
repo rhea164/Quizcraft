@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const path = require("path"); 
 const cookieParser = require('cookie-parser'); 
 const { error, time } = require("console");
+const { type } = require("os");
 const port = 5000;
 
 
@@ -46,12 +47,12 @@ db.connect((error) => {
     }
 });
 
-app.post("http://localhost:5000/api/quiz/takequiz", (req, res) => {
+app.post("/api/quiz/takequiz", (req, res) => {
     const quizCode = req.query.code;
 
     if(!quizCode){
         console.log("Quiz code is required!");
-        return res.status(500).json({});
+        return res.status(500).send(null);
     }
 
     const quizQuery = 'SELECT * FROM QUIZZES WHERE QUIZ_CODE = ?';
@@ -60,7 +61,7 @@ app.post("http://localhost:5000/api/quiz/takequiz", (req, res) => {
 
         if (err) {
             console.log("Error fetching the quiz.");
-            return res.status(500).json({});
+            return res.status(500).send(null);
         }
 
         if (quizResults.length === 0) {
@@ -116,9 +117,8 @@ app.post("http://localhost:5000/api/quiz/takequiz", (req, res) => {
         });
     });
 });
-
 // creates/update a quiz
-app.post("http://localhost:5000/api/quiz/create", (req, res) => {
+app.post("/api/quiz/create", (req, res) => {
     const { username, questions, title, code, timeLimit } = req.body; 
 
     var query = `SELECT * FROM Questions WHERE Quiz_CODE = ?`;
@@ -126,9 +126,9 @@ app.post("http://localhost:5000/api/quiz/create", (req, res) => {
     db.query(query, [code], (error, result) => {
         if(result.length > 0){
             // removes options
-            for(let question in questions) {
-                optionsQuery = `DELETE * FROM OPTIONS WHERE Question_CODE = ?`;
-                db.query(optionsQuery, [question.QUESTION_TEXT], (error, result) => {
+            for(let index in questions) {
+                optionsQuery = `DELETE FROM OPTIONS WHERE Question_TEXT = ?`;
+                db.query(optionsQuery, [questions[index].question], (error, result) => {
                     if(error){
                         console.log(" couldn't delete options");
                     } else {
@@ -137,7 +137,7 @@ app.post("http://localhost:5000/api/quiz/create", (req, res) => {
                 });
             };
             // removes questions 
-            var query = `DELETE * FROM Questions WHERE Quiz_CODE = ?`;
+            var query = `DELETE FROM Questions WHERE Quiz_CODE = ?`;
             db.query(query, [code], (error, result) => {
                 if(error){
                     console.log(" couldn't delete questions");
@@ -146,7 +146,7 @@ app.post("http://localhost:5000/api/quiz/create", (req, res) => {
                 }
             });
             // removes quiz. 
-            var query = `DELETE * FROM Quizzes WHERE Quiz_CODE = ?`;
+            var query = `DELETE FROM Quizzes WHERE Quiz_CODE = ?`;
             db.query(query, [code], (error, result) => {
                 if(error){
                     console.log(" couldn't delete quiz");
@@ -157,9 +157,8 @@ app.post("http://localhost:5000/api/quiz/create", (req, res) => {
         }
     });
 
-    console.log(code + username + title + timeLimit);
-    var query = `INSERT INTO QUIZZES (quiz_code, USERNAME, title, time_limit) VALUES (${code}, ${username}, ${title}, ${timeLimit} );`;
-    db.query(query,  (error, result) =>{
+    var query = `INSERT INTO QUIZZES (quiz_code, USERNAME, title, time_limit) VALUES (?, ?, ?, ?);`;
+    db.query(query, [code, username, title, timeLimit] ,(error, result) =>{
         if(error){
             console.log("couldn't insert quiz 1 " + error)
         } else {
@@ -168,39 +167,41 @@ app.post("http://localhost:5000/api/quiz/create", (req, res) => {
     });
 
     // inserting questions.
-    for(let element in questions) {
-        var questionQuery = `INSERT INTO  QUESTIONS (QUIZ_CODE, QUESTION_TEXT, QUESTION_TYPE) VALUES(${code}, ${element.question}, ${element.type});`;
-        db.query(questionQuery, (error, result) =>{
+    for (let i in questions) {
+       
+        var questionQuery = `INSERT INTO  QUESTIONS (QUIZ_CODE, QUESTION_TEXT, QUESTION_TYPE) VALUES(?, ?, ?);`;
+        db.query(questionQuery, [code, questions[i].question, questions[i].type], (error, result) =>{
             if(error){
                 console.log("couldn't insert quiz");
             } else {
                 console.log(result);
             }
         });
-        for(let answer in element){
-            var optionsQuery = `INSERT INTO  OPTIONS ( QUESTION_TEXT, OPTION_TEXT, QUESTION_TYPE, IS_CORRECT) VALUES( ${element.question}, ${answer}, ${element.type}, ${answer === element.answer})`;
-              db.query(optionsQuery, (error, result) =>{
+        for(let ind in questions[i].options){
+            var optionsQuery = `INSERT INTO  OPTIONS (QUESTION_TEXT, OPTION_TEXT, IS_CORRECT) VALUES(?, ?, ?)`;
+            let correct = questions[i].options[ind] === questions[i].answer;
+            db.query(optionsQuery, [questions[i].question, questions[i].options[ind], correct], (error, result) =>{
               if(error){
-                  console.log("Error inserting options");
+                  console.log("Error inserting options " + error);
               } else {
                   console.log("added option");
               }
-              });
+            });
         };
 
     };
 });
 
 // delete quiz.
-app.delete("http://localhost:5000/api/quiz/delete", (req, res) => {
-    const code = req.body.code;
+app.delete("/api/quiz/delete", (req, res) => {
+    const {code, questions }= req.body;
     var query = `SELECT * FROM Questions WHERE Quiz_CODE = ?`;
    
     db.query(query, [code], (req, res) => {
         // removes options
-        for(let question in req.body.questions) {
-            optionsQuery = `DELETE * FROM OPTIONS WHERE Question_CODE = ?`;
-            db.query(optionsQuery, [question.QUESTION_TEXT], (error, result) => {
+        for(let index in questions) {
+            optionsQuery = `DELETE FROM OPTIONS WHERE Question_TEXT = ?`;
+            db.query(optionsQuery, [questions[index].question], (error, result) => {
                 if(error){
                     console.log(" couldn't delete options");
                 } else {
@@ -210,7 +211,7 @@ app.delete("http://localhost:5000/api/quiz/delete", (req, res) => {
         };
     });
     // removes questions 
-    var query = `DELETE * FROM Questions WHERE Quiz_CODE = ?`;
+    var query = `DELETE FROM Questions WHERE Quiz_CODE = ?`;
     db.query(query, [code], (error, result) => {
         if(error){
             console.log(" couldn't delete quiz");
@@ -219,7 +220,7 @@ app.delete("http://localhost:5000/api/quiz/delete", (req, res) => {
         }
     });
     // removes quiz.
-    var query = `DELETE * FROM Quizzes WHERE Quiz_CODE = ?`;
+    var query = `DELETE FROM Quizzes WHERE Quiz_CODE = ?`;
     db.query(query, [code], (error, result) => {
         if(error){
             console.log(" couldn't delete quiz");
@@ -229,8 +230,7 @@ app.delete("http://localhost:5000/api/quiz/delete", (req, res) => {
     });
 });
 
-app.post("http://localhost:5000/api/quiz/home", (req, res) => {
-    console.log(req);
+app.post("/api/quiz/home", (req, res) => {
     const username = req.body.username; 
 
     if (!username) {
