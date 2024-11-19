@@ -1,15 +1,12 @@
 // QuizManager.js
 
 // Store quizzes in sessionStorage to persist data
-const loadQuizzes = () => {
-  let stored = null;
-    fetch("http://localhost:5000/api/quiz/home",
-      { method: 'POST',headers: {'Content-Type': 'application/json',}, body: JSON.stringify({username: getUsername()})})
-      .then(response => response.json())
-      .then(data => {stored = data})
-      .catch(error => console.log("MENTOR HOME PAGE ERROR:" + error));
-    
-    return stored ? JSON.parse(stored) : {};
+const loadQuizzes = async () => {
+     const response = await fetch("http://localhost:5000/api/quiz/home",
+      { method: 'POST',headers: {'Content-Type': 'application/json',}, body: JSON.stringify({username: getUsername()})});
+     let stored = await response.json();
+     let finalStored = await stored;
+     return finalStored;
   };
   
   function setUsername(username) {
