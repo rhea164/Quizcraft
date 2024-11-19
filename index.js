@@ -161,7 +161,7 @@ app.post("/api/quiz/create", (req, res) => {
         if(error){
             console.log("couldn't insert quiz 1 " + error)
         } else {
-            console.log(result);
+            console.log("inserted");
         }
     });
 
@@ -193,15 +193,18 @@ app.post("/api/quiz/create", (req, res) => {
 });
 
 // delete quiz.
-app.delete("/api/quiz/delete", (req, res) => {
-    const {code, questions }= req.body;
+app.post("/api/quiz/delete", (req, res) => {
+    const code = req.body.code;
+    console.log(code);
+    console.log(" goes");
     var query = `SELECT * FROM Questions WHERE Quiz_CODE = ?`;
    
-    db.query(query, [code], (req, res) => {
+    db.query(query, [code], (error, result) => {
         // removes options
-        for(let index in questions) {
+        console.log("result: " + result);
+        for(let index in result) {
             optionsQuery = `DELETE FROM OPTIONS WHERE Question_TEXT = ?`;
-            db.query(optionsQuery, [questions[index].question], (error, result) => {
+            db.query(optionsQuery, [result[index].QUESTION_TEXT], (error, result) => {
                 if(error){
                     console.log(" couldn't delete options");
                 } else {
@@ -214,9 +217,9 @@ app.delete("/api/quiz/delete", (req, res) => {
     var query = `DELETE FROM Questions WHERE Quiz_CODE = ?`;
     db.query(query, [code], (error, result) => {
         if(error){
-            console.log(" couldn't delete quiz");
+            console.log(" couldn't delete questions");
         } else {
-            console.log("quiz removed succefully ");
+            console.log("questions removed succefully ");
         }
     });
     // removes quiz.
@@ -233,7 +236,7 @@ app.delete("/api/quiz/delete", (req, res) => {
 app.post("/api/quiz/home", (req, res) => {
 
     const username = req.body.username; 
-    console.log(username);
+   
     if (!username) {
         console.log("Please provide username!!");
         return res.status(500).json({}); // empty JSON object sent back
@@ -257,8 +260,6 @@ app.post("/api/quiz/home", (req, res) => {
 
         for(let index in quizResults)  {
             const questionsQuery = 'SELECT * FROM QUESTIONS WHERE QUIZ_CODE = ?';
-            console.log(quizResults[index]);
-            console.log(quizResults[index].QUIZ_CODE);
             db.query(questionsQuery, [quizResults[index].QUIZ_CODE], (err, questionResults) => {
                 if (err) {
                     console.log("Error fetching questions!");
@@ -276,13 +277,10 @@ app.post("/api/quiz/home", (req, res) => {
                                 console.log("Error fetching options.");
                                 return res.status(500).json({}); // empty JSON object sent back
                             }
-                            console.log("options results: " + optionResults);
 
                             const options = optionResults.map((opt) => opt.OPTION_TEXT); 
-                            console.log(options);
-                            
+                    
                             const answer = optionResults.find((opt) => opt.IS_CORRECT)?.OPTION_TEXT || ''; 
-                            console.log(answer);
 
                             questions.push({ 
                                 question: questionResults[i].QUESTION_TEXT,
@@ -290,8 +288,7 @@ app.post("/api/quiz/home", (req, res) => {
                                 answer: answer,
                                 type: questionResults[i].QUESTION_TYPE
                             });
-                            console.log(questions);
-                            console.log("questions pushed");
+
                             processedQuestions++;
                             if (processedQuestions === questionResults.length) {
                                 quizzes.push({
@@ -306,8 +303,6 @@ app.post("/api/quiz/home", (req, res) => {
                             processedQuizzes++;
                               
                                 if (processedQuizzes === quizResults.length) {
-                                  console.log("quizzes pushed ");
-                                  console.log(quizzes);
                                 return res.json(quizzes);
                             }
                         }
