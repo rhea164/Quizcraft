@@ -231,14 +231,15 @@ app.delete("/api/quiz/delete", (req, res) => {
 });
 
 app.post("/api/quiz/home", (req, res) => {
-    const username = req.body.username; 
 
+    const username = req.body.username; 
+    console.log(username);
     if (!username) {
         console.log("Please provide username!!");
         return res.status(500).json({}); // empty JSON object sent back
     }
 
-    const quizzesQuery = 'SELECT * FROM QUIZZES WHERE USERNAME = ?';
+    var quizzesQuery = 'SELECT * FROM QUIZZES WHERE USERNAME = ?;';
 
     db.query(quizzesQuery, [username], (err, quizResults) => {
         if (err) {
@@ -254,10 +255,11 @@ app.post("/api/quiz/home", (req, res) => {
         const quizzes = []; 
         let processedQuizzes = 0;
 
-        for(let quiz in quizResults)  {
-            const questionsQuery = 'SELECT * FROM QUESTIONS WHERE QUIZ_CODE = ?';
-
-            db.query(questionsQuery, [quiz.QUIZ_CODE], (err, questionResults) => {
+        for(let index in quizResults)  {
+            const questionsQuery = 'SELECT (question_Text) FROM QUESTIONS WHERE QUIZ_CODE = ?';
+            console.log(quizResults[index]);
+            console.log(quizResults[index].QUIZ_CODE);
+            db.query(questionsQuery, [quizResults[index].QUIZ_CODE], (err, questionResults) => {
                 if (err) {
                     console.log("Error fetching questions!");
                     return res.status(500).json({}); // empty JSON object sent back
@@ -265,60 +267,49 @@ app.post("/api/quiz/home", (req, res) => {
 
                 const questions = []; // To hold all questions for this quiz
                 let processedQuestions = 0;
+         
+                    for(let i in questionResults)  {
+                        console.log("Question:" + questionResults[i].QUESTION_TEXT);
+                        const optionsQuery = 'SELECT * FROM OPTIONS WHERE QUESTION_TEXT = ?;';
 
-                if (questionResults.length === 0) {
-                    // If no questions, add the quiz to the result directly
-                    quizzes.push({
-                        username: quiz.USERNAME,
-                        code: quiz.QUIZ_CODE,
-                        title: quiz.TITLE,
-                        timeLimit: quiz.TIME_LIMIT,
-                        questions: [],
-                    });
-
-                    processedQuizzes++;
-                    if (processedQuizzes === quizResults.length) {
-                        return res.json(quizzes);
-                    }
-                } else {
-                    for(let question in questionResults)  {
-                        const optionsQuery = 'SELECT * FROM OPTIONS WHERE QUESTION_TEXT = ?';
-
-                        db.query(optionsQuery, [question.QUESTION_TEXT], (err, optionResults) => {
+                        db.query(optionsQuery, [questionResults[i].QUESTION_TEXT], (err, optionResults) => {
                             if (err) {
                                 console.log("Error fetching options.");
                                 return res.status(500).json({}); // empty JSON object sent back
                             }
+                            console.log("options results: " + optionResults);
 
-                            const options = optionResults.map((opt) => opt.OPTION_TEXT);
-                            const answer = optionResults.find((opt) => opt.IS_CORRECT)?.OPTION_TEXT || '';
-
+                            const options = optionResults.map((opt) => opt.OPTION_TEXT); // do not work
+                            console.log(options);
+                            const answer = optionResults.find((opt) => opt.IS_CORRECT)?.OPTION_TEXT || ''; // do not work
+                            console.log(answer);
                             questions.push({
-                                question: question.QUESTION_TEXT,
+                                question: questionResults[i].QUESTION_TEXT,
                                 options: options,
                                 answer: answer,
-                                type: question.QUESTION_TYPE,
+                                type: questionResults[i].QUESTION_TYPE,
                             });
-
+                            console.log("questions pushed");
                             processedQuestions++;
                             if (processedQuestions === questionResults.length) {
                                 quizzes.push({
-                                    username: quiz.USERNAME,
-                                    code: quiz.QUIZ_CODE,
-                                    title: quiz.TITLE,
-                                    timeLimit: quiz.TIME_LIMIT,
-                                    questions,
+                                    username: quizResults[index].USERNAME,
+                                    code: quizResults[index].QUIZ_CODE,
+                                    title: quizResults[index].TITLE,
+                                    timeLimit: quizResults[index].TIME_LIMIT,
+                                    questions: questions,
                                 });
 
-                                processedQuizzes++;
-
+                               
+                            processedQuizzes++;
+                              
                                 if (processedQuizzes === quizResults.length) {
-                                    return res.json(quizzes);
-                                }
+                                  console.log("quizzes pushed ");
+                                return res.json(quizzes);
                             }
-                        });
-                    };
-                }
+                        }
+                    });
+                };
             });
         };
     });
