@@ -56,7 +56,7 @@ function getUsername() {
        { method: 'POST',headers: {'Content-Type': 'application/json',}, body: JSON.stringify({code: quizCode})})
        .then(response => response.json())
        .then(data => {quiz = data})
-       .catch(error => console.log("STUDENT CODE ERROR:" + error));
+       .catch(error => {console.log("STUDENT CODE ERROR:" + error)});
     return quiz;
   }
   
