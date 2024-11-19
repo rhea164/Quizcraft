@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const path = require("path"); 
 const cookieParser = require('cookie-parser'); 
 const { error } = require("console");
+const port = 5000;
 
 
 const app = express();
@@ -248,6 +249,6 @@ app.use('/', require('./routes/pages'));
 // '/auth' route is handled by the 'auth' module
 app.use('/auth', require('./routes/auth'));
 
-app.listen(8000, () => {
-    console.log("Server is running on 5000");
+app.listen(port, () => {
+    console.log("Server is running on port " + port);
 });
