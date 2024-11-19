@@ -51,17 +51,22 @@ db.connect((error) => {
 app.get("/api/quiz/takequiz/", (req, res) => {
     const quizCode = req.query.code;
 
-
+    if(!quizCode){
+        console.log("Quiz code is required!");
+        return res.status(200).json({});
+    }
 
     const quizQuery = 'SELECT * FROM QUIZZES WHERE QUIZ_CODE = ?';
 
     db.query(quizQuery, [quizCode], (err, quizResults) => {
         if (err) {
             console.log("Error fetching the quiz.");
+            return res.status(500).json({});
         }
 
         if (quizResults.length === 0) {
-            console.log("No quizzes found!")
+            console.log("No quizzes found!");
+            return res.status(404).json({});
         }
 
         const quiz = quizResults[0];
@@ -71,9 +76,12 @@ app.get("/api/quiz/takequiz/", (req, res) => {
         db.query(questionQuery, [quizCode], (err, questionResults) => {
             if (err) {
                 console.log("Error fetching questions.");
+                return res.status(500).json({});
             }
 
             const questions = [];
+            let questionsProcessed = 0;
+
             questionResults.forEach((question) => {
                 const optionsQuery = 'SELECT * FROM OPTIONS WHERE QUESTION_TEXT = ?';
 
@@ -92,7 +100,9 @@ app.get("/api/quiz/takequiz/", (req, res) => {
                         type: question.QUESTION_TYPE
                     });
 
-                    if (questions.length === questionResults.length) {
+                    questionsProcessed++;
+
+                    if (questionsProcessed === questionResults.length) {
                         res.json({
                             username: quiz.USERNAME,
                             code: quiz.QUIZ_CODE,
