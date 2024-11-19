@@ -48,17 +48,16 @@ db.connect((error) => {
 });
 
 app.post("/api/quiz/takequiz", (req, res) => {
-    const quizCode = req.query.code;
-
-    if(!quizCode){
+    const quizCode = req.body.code;
+    // if there is no quiz code
+    if (!quizCode) {
         console.log("Quiz code is required!");
-        return res.status(500).send(null);
+        return res.status(500).send(null); 
     }
 
     const quizQuery = 'SELECT * FROM QUIZZES WHERE QUIZ_CODE = ?';
-
+    // gets the quiz.
     db.query(quizQuery, [quizCode], (err, quizResults) => {
-
         if (err) {
             console.log("Error fetching the quiz.");
             return res.status(500).send(null);
@@ -70,59 +69,59 @@ app.post("/api/quiz/takequiz", (req, res) => {
         }
 
         const quiz = quizResults[0];
+        const questionsQuery = 'SELECT * FROM QUESTIONS WHERE QUIZ_CODE = ?';
 
-        const questionQuery = 'SELECT * FROM QUESTIONS WHERE QUIZ_CODE = ?';
-
-        db.query(questionQuery, [quizCode], (err, questionResults) => {
+        db.query(questionsQuery, [quizCode], (err, questionResults) => {
             if (err) {
                 console.log("Error fetching questions.");
                 return res.status(500).json({});
             }
 
-            const questions = [];
-            let questionsProcessed = 0;
-
-            for(let question in questionResults)  {
+            const questions = []; // Array to store questions with options
+            let processedQuestions = 0;
+            // gets all the questions.
+            for (let i in questionResults) {
                 const optionsQuery = 'SELECT * FROM OPTIONS WHERE QUESTION_TEXT = ?';
 
-                db.query(optionsQuery, [question.QUESTION_TEXT], (err, optionResults) => {
+                db.query(optionsQuery, [questionResults[i].QUESTION_TEXT], (err, optionResults) => {
                     if (err) {
                         console.log("Error fetching options.");
                         return res.status(500).json({});
                     }
 
-                    const options = optionResults.map(opt => opt.OPTION_TEXT);
-                    const answer = optionResults.find(opt => opt.IS_CORRECT)?.OPTION_TEXT || '';
-
+                    const options = optionResults.map((opt) => opt.OPTION_TEXT); // Extract option text
+                    const answer = optionResults.find((opt) => opt.IS_CORRECT)?.OPTION_TEXT || ''; // Correct answer
+                    // adds 1 question at a time.
                     questions.push({
-                        question: question.QUESTION_TEXT,
-                        options: options,
+                        question: questionResults[i].QUESTION_TEXT,
+                        options: JSON.stringify(options),
                         answer: answer,
-                        type: question.QUESTION_TYPE
+                        type: questionResults[i].QUESTION_TYPE
                     });
-
-                    questionsProcessed++;
-
-                    if (questionsProcessed === questionResults.length) {
-                        res.json({
+                    // if all questions have been added send back the quiz.
+                    processedQuestions++;
+                    if (processedQuestions === questionResults.length) {
+                        // Send the response once all questions are processed
+                        return res.json({
                             username: quiz.USERNAME,
                             code: quiz.QUIZ_CODE,
                             title: quiz.TITLE,
                             timeLimit: quiz.TIME_LIMIT,
-                            questions: questions
+                            questions: JSON.stringify(questions)
                         });
                     }
                 });
-            };
-        });
-    });
+            }
+        });
+    });
 });
+
 // creates/update a quiz
 app.post("/api/quiz/create", (req, res) => {
     const { username, questions, title, code, timeLimit } = req.body; 
 
     var query = `SELECT * FROM Questions WHERE Quiz_CODE = ?`;
-   // deletes full quiz. if it already exists
+   // deletes full quiz. to be replaced for update if it already exists.
     db.query(query, [code], (error, result) => {
         if(result.length > 0){
             // removes options
@@ -156,7 +155,7 @@ app.post("/api/quiz/create", (req, res) => {
             });
         }
     });
-
+    // inserting quiz into quizzes table.
     var query = `INSERT INTO QUIZZES (quiz_code, USERNAME, title, time_limit) VALUES (?, ?, ?, ?);`;
     db.query(query, [code, username, title, timeLimit] ,(error, result) =>{
         if(error){
@@ -177,6 +176,7 @@ app.post("/api/quiz/create", (req, res) => {
                 console.log(result);
             }
         });
+        // inserting options
         for(let ind in questions[i].options){
             var optionsQuery = `INSERT INTO  OPTIONS (QUESTION_TEXT, OPTION_TEXT, IS_CORRECT) VALUES(?, ?, ?)`;
             let correct = questions[i].options[ind] === questions[i].answer;
@@ -229,7 +229,7 @@ app.delete("/api/quiz/delete", (req, res) => {
         }
     });
 });
-
+// send a json file with all the mentor quizzes.
 app.post("/api/quiz/home", (req, res) => {
 
     const username = req.body.username; 
@@ -284,11 +284,11 @@ app.post("/api/quiz/home", (req, res) => {
                             const answer = optionResults.find((opt) => opt.IS_CORRECT)?.OPTION_TEXT || ''; 
                             console.log(answer);
 
-                            questions.push({
+                            questions.push({ 
                                 question: questionResults[i].QUESTION_TEXT,
-                                options:  options.map(String).join(" "),
+                                options:  JSON.stringify(options),
                                 answer: answer,
-                                type: questionResults[i].QUESTION_TYPE,
+                                type: questionResults[i].QUESTION_TYPE
                             });
                             console.log(questions);
                             console.log("questions pushed");
@@ -299,7 +299,7 @@ app.post("/api/quiz/home", (req, res) => {
                                     code: quizResults[index].QUIZ_CODE,
                                     title: quizResults[index].TITLE,
                                     timeLimit: quizResults[index].TIME_LIMIT,
-                                    questions: questions[i],
+                                    questions: JSON.stringify(questions)
                                 });
 
                                
@@ -317,8 +317,6 @@ app.post("/api/quiz/home", (req, res) => {
         };
     });
 });
-
-            
 
 // Define the routes for the application
 // '/' route is handled by the 'pages' module
