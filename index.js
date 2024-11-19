@@ -248,6 +248,6 @@ app.use('/', require('./routes/pages'));
 // '/auth' route is handled by the 'auth' module
 app.use('/auth', require('./routes/auth'));
 
-app.listen(5000, () => {
+app.listen(8000, () => {
     console.log("Server is running on 5000");
 });
