@@ -48,7 +48,60 @@ db.connect((error) => {
 
 
 app.get("/api/quiz/takequiz", (req, res) => {
-    console.log(req);
+    const quizCode = req.params.code;
+
+    const quizQuery = 'SELECT * FROM QUIZZES WHERE QUIZ_CODE = ?';
+
+    db.query(quizQuery, [quizCode], (err, quizResults) => {
+        if (err) {
+            console.log("Error fetching the quiz.");
+        }
+
+        if (quizResults.length === 0) {
+            console.log("No quizzes found!")
+        }
+
+        const quiz = quizResults[0];
+
+        const questionQuery = 'SELECT * FROM QUESTIONS WHERE QUIZ_CODE = ?';
+
+        db.query(questionQuery, [quizCode], (err, questionResults) => {
+            if (err) {
+                console.log("Error fetching questions.");
+            }
+
+            const questions = [];
+            questionResults.forEach((question) => {
+                const optionsQuery = 'SELECT * FROM OPTIONS WHERE QUESTION_TEXT = ?';
+
+                db.query(optionsQuery, [question.QUESTION_TEXT], (err, optionResults) => {
+                    if (err) {
+                        console.log("Error fetching options.")
+                    }
+
+                    const options = optionResults.map(opt => opt.OPTION_TEXT);
+                    const answer = optionResults.find(opt => opt.IS_CORRECT)?.OPTION_TEXT || '';
+
+                    questions.push({
+                        question: question.QUESTION_TEXT,
+                        options: options,
+                        answer: answer,
+                        type: question.QUESTION_TYPE
+                    });
+
+                    if (questions.length === questionResults.length) {
+                        res.json({
+                            username: quiz.USERNAME,
+                            code: quiz.QUIZ_CODE,
+                            title: quiz.TITLE,
+                            timeLimit: quiz.TIME_LIMIT,
+                            questions: questions
+                        });
+                    }
+                });
+            });
+        });
+    });
 });
 
 app.post("/api/quiz/create", (req, res) => {
@@ -91,7 +144,7 @@ app.post("/api/quiz/create", (req, res) => {
 
 app.get("/api/quiz/home", (req, res) => {
     console.log(req);
-    const username = req.username;
+    const username = req.params.username;
     const quizquery = 'SELECT * FROM QUIZZES WHERE USERNAME = ?';
     db.query(quizquery, [username], (err, quizres) => {
         if (err) {
