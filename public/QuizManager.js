@@ -17,8 +17,7 @@ const loadQuizzes = () => {
 }
 
 function getUsername() {
-  const userName = Integer.parseInt(sessionStorage.getItem('username')); 
-  return userName;
+  return sessionStorage.getItem('username'); 
 }
 
   let quizzes = loadQuizzes();
