@@ -46,7 +46,7 @@ db.connect((error) => {
     }
 });
 
-app.post("/api/quiz/takequiz/", (req, res) => {
+app.post("http://localhost:5000/api/quiz/takequiz", (req, res) => {
     const quizCode = req.query.code;
 
     if(!quizCode){
@@ -118,7 +118,7 @@ app.post("/api/quiz/takequiz/", (req, res) => {
 });
 
 // creates/update a quiz
-app.post("/api/quiz/create", (req, res) => {
+app.post("http://localhost:5000/api/quiz/create", (req, res) => {
     const { username, questions, title, code, timeLimit } = req.body; 
 
     var query = `SELECT * FROM Questions WHERE Quiz_CODE = ?`;
@@ -192,7 +192,7 @@ app.post("/api/quiz/create", (req, res) => {
 });
 
 // delete quiz.
-app.delete("/api/quiz/delete/", (req, res) => {
+app.delete("http://localhost:5000/api/quiz/delete", (req, res) => {
     const code = req.body.code;
     var query = `SELECT * FROM Questions WHERE Quiz_CODE = ?`;
    
@@ -229,7 +229,7 @@ app.delete("/api/quiz/delete/", (req, res) => {
     });
 });
 
-app.post("/api/quiz/home/", (req, res) => {
+app.post("http://localhost:5000/api/quiz/home", (req, res) => {
     console.log(req);
     const username = req.body.username; 
 
