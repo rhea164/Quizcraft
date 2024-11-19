@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 const path = require("path"); 
 const cookieParser = require('cookie-parser'); 
 const { error } = require("console");
-const port = 5000;
+const port = 8000;
 
 
 const app = express();

@@ -29,12 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   quizForm.addEventListener('submit',submitQuizHandler );
   }
-
- 
- 
 });
-
-
 
 function submitQuizHandler(event) {
   event.preventDefault();
@@ -88,9 +83,6 @@ timeLimitInput.value = quizData.timeLimit;
 //getting the current user's username from sessionStorage
 let username=sessionStorage.getItem('username');
 
-
-
-// Function to populate questions in the form
 function populateQuestions(questions) {
   const questionContainer = document.getElementById('questionContainer');
   const questionTemplate = document.querySelector('.question-card-template');
@@ -116,6 +108,7 @@ function populateQuestions(questions) {
     // Populate the options dropdown with the available options (whether it's MCQ or True/False)
     question.options.forEach((optionText) => {
       const option = document.createElement('option');
+      option.classList.add('option');
       option.value = optionText;
       option.textContent = optionText;
       correctOptionSelect.appendChild(option);
@@ -146,7 +139,6 @@ function populateQuestions(questions) {
   });
 }
 
-// Populate the form with existing quiz questions
 populateQuestions(quizData.questions);
 
 
@@ -161,8 +153,6 @@ function deleteQuestion(event,index) {
 }
 
 
-
-// Save the updated quiz data back to localStorage
 function saveQuiz() {
   // Update the existing quiz data from form fields
   quizData.title = titleInput.value;
@@ -184,7 +174,7 @@ function saveQuiz() {
     } else {
       options = Array.from(div.querySelectorAll('.option')).map(opt => opt.value);
       const correctAnswerIndex = parseInt(div.querySelector('.correctAnswer').value);
-      correctAnswer = options[correctAnswerIndex];
+      correctAnswer = options[correctAnswerIndex]; // Store the actual option text as the answer
     }
 
     if (questionText && options.every(opt => opt)) {
@@ -200,18 +190,12 @@ function saveQuiz() {
   // Update the questions in quizData
   quizData.questions = questions;
 
-  // Save the updated quizData back to localStorage
-  // quizzes[quizCode] = quizData;
-  // localStorage.setItem('quizzes', JSON.stringify(quizzes));
-
   //adding the changed quiz
-  addQuiz(username,quizCode,quizData.title,quizData.questions,quizData.timeLimit);
-
-
+  addQuiz(username, quizCode, quizData.title, quizData.questions, quizData.timeLimit);
+  
 
   // Notify the user and redirect
   alert('Quiz updated successfully!');
-  // window.location.href = 'mentor.html';
 }
 
 
