@@ -13,6 +13,8 @@ const loadQuizzes = () => {
             quizzes[i].questions[j].options = JSON.parse(quizzes[i].questions[j].options);
           }
         }
+
+        sessionStorage.setItem("quizzes", JSON.stringify(quizzes));
         
         console.log(quizzes);
         sessionStorage.setItem("quizzes", quizzes);

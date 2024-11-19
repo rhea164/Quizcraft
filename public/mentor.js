@@ -13,6 +13,7 @@ if (!username) {
 // Function to display quizzes on the Mentor page
 function displayQuizzes() {
   loadQuizzes();
+  
 }
 
 // Initialize the display when the page loads
