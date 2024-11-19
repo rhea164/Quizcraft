@@ -2,12 +2,14 @@
 
 // Store quizzes in sessionStorage to persist data
 const loadQuizzes = () => {
-    const stored = sessionStorage.getItem('quizzes');
+  const stored = null;
+    fetch("http://localhost:5000/api/quiz/home",
+      { method: 'GET',headers: {'Content-Type': 'application/json',}})
+      .then(response => response.json())
+      .then(data => {stored = data})
+      .catch(error => console.log("MENTOR HOME PAGE ERROR:" + error));
+    
     return stored ? JSON.parse(stored) : {};
-  };
-  
-  const saveQuizzes = (quizzes) => {
-    sessionStorage.setItem('quizzes', JSON.stringify(quizzes));
   };
   
   function setUsername(username) {
@@ -27,8 +29,6 @@ function getUsername() {
   
   // Function to add a new quiz to the question bank
   function addQuiz(username,quizCode, quizTitle, questions,timeLimit) {
-    console.log('Adding quiz:', { quizCode, quizTitle, questions,timeLimit });
-    
     const quiz = {
         username: username,
         code: quizCode,
@@ -36,25 +36,29 @@ function getUsername() {
         questions: questions,
         timeLimit: timeLimit
     };
-    
-    quizzes[quizCode] = quiz;
-    saveQuizzes(quizzes);
-    console.log('Updated quizzes:', quizzes);
+    fetch("http://localhost:5000/api/quiz/create",
+      {method: 'POST', headers: { 'Content-Type' : 'application/json'}, body: JSON.stringify(quiz)})
+       .then(response => console.log(response.status))
+       .catch(error => console.log("POST ERROR :" + error));
     return true;
   }
 
   function deleteQuiz(quizCode) {
     console.log('Deleting quiz with code:', quizCode);
-    delete quizzes[quizCode];
-    // saveQuizzes(quizzes);
+    fetch("http://localhost:5000/api/quiz/delete", {method: 'DELETE'})
+    .then(res => console.log(res.status));
     displayQuizzes();
   };
   
   // Function to fetch a quiz by its code
   function getQuizByCode(quizCode) {
-    console.log('Fetching quiz with code:', quizCode);
-    console.log('Available quizzes:', quizzes);
-    return quizzes[quizCode] || null;
+    const quiz = null;
+    fetch("http://localhost:5000/api/quiz/takequiz",
+       { method: 'GET',headers: {'Content-Type': 'application/json',}})
+       .then(response => response.json())
+       .then(data => {quiz = data})
+       .catch(error => console.log("STUDENT CODE ERROR:" + error));
+    return quiz;
   }
   
   // Export functions for use in other files
@@ -90,4 +94,4 @@ function getUsername() {
 
   addQuiz(exampleQuiz.username,exampleQuiz.code, exampleQuiz.title, exampleQuiz.questions,exampleQuiz.timeLimit);
 
-  export { loadQuizzes, saveQuizzes };
+  export { loadQuizzes };
