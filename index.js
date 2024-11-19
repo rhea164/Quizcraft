@@ -47,7 +47,7 @@ db.connect((error) => {
 
 
 
-app.get("/api/quiz/takequiz", (req, res) => {
+app.get("/api/quiz/takequiz/:code", (req, res) => {
     const quizCode = req.params.code;
 
     const quizQuery = 'SELECT * FROM QUIZZES WHERE QUIZ_CODE = ?';
@@ -142,71 +142,97 @@ app.post("/api/quiz/create", (req, res) => {
 });
 
 
-app.get("/api/quiz/home", (req, res) => {
+app.get("/api/quiz/home/", (req, res) => {
     console.log(req);
-    const username = req.params.username;
-    const quizquery = 'SELECT * FROM QUIZZES WHERE USERNAME = ?';
-    db.query(quizquery, [username], (err, quizres) => {
+    const username = req.query.username; 
+
+    if (!username) {
+        console.log("Please provide username!!");
+    }
+
+    const quizzesQuery = 'SELECT * FROM QUIZZES WHERE USERNAME = ?';
+
+    db.query(quizzesQuery, [username], (err, quizResults) => {
         if (err) {
-            console.log("Error fetching the quizzes.");
+            console.log("Error fetching quizzes:");
         }
 
-        if (quizres.length === 0){
-            console.log("No quizzes found.");
+        if (quizResults.length === 0) {
+            console.log("No quizzes found for this user.");
         }
 
-        const quizzes = [];
+        const quizzes = []; 
+        let processedQuizzes = 0;
 
-        quizres.forEach(quiz => {
-            const quizCode = quiz.QUIZ_CODE;
+        quizResults.forEach((quiz) => {
+            const questionsQuery = 'SELECT * FROM QUESTIONS WHERE QUIZ_CODE = ?';
 
-            const questionQuery = 'SELECT * FROM QUESTIONS WHERE QUIZ_CODE = ?';
-
-            db.query(questionQuery, [quizCode], (err, questionResults) => {
-                if (err){
-                    console.log ("Error getting questions.");
+            db.query(questionsQuery, [quiz.QUIZ_CODE], (err, questionResults) => {
+                if (err) {
+                    console.log("Error fetching questions!");
                 }
 
-                const questions = [];
+                const questions = []; // To hold all questions for this quiz
+                let processedQuestions = 0;
 
-                questionResults.forEach((question) => {
-                    const optionsQuery = 'SELECT * FROM OPTIONS WHERE QUESTION_TEXT = ?';
+                if (questionResults.length === 0) {
+                    // If no questions, add the quiz to the result directly
+                    quizzes.push({
+                        username: quiz.USERNAME,
+                        code: quiz.QUIZ_CODE,
+                        title: quiz.TITLE,
+                        timeLimit: quiz.TIME_LIMIT,
+                        questions: [],
+                    });
 
-                    db.query(optionsQuery, question.QUESTION_TEXT, (err, optionResults) => {
+                    processedQuizzes++;
+                    if (processedQuizzes === quizResults.length) {
+                        res.json(quizzes);
+                    }
+                } else {
+                    questionResults.forEach((question) => {
+                        const optionsQuery = 'SELECT * FROM OPTIONS WHERE QUESTION_TEXT = ?';
 
-                        if (err){
-                            console.log("Error getting options.");
-                        }
+                        db.query(optionsQuery, [question.QUESTION_TEXT], (err, optionResults) => {
+                            if (err) {
+                                console.log("Error fetching options.");
+                            }
 
-                        const options  = optionResults.map(option => option.OPTION_TEXT);
-                        const answer = optionResults.find(option => option.IS_CORRECT)?.OPTION_TEXT || '';
+                            const options = optionResults.map((opt) => opt.OPTION_TEXT);
+                            const answer = optionResults.find((opt) => opt.IS_CORRECT)?.OPTION_TEXT || '';
 
-                        questions.push({
-                            question: question.QUESTION_TEXT,
-                            options: options,
-                            answer: answer,
-                            type: question.QUESTION_TYPE
-                        });
-
-                        if (questions.length === questionResults.length){
-                            quizzes.push({
-                                username: quiz.USERNAME,
-                                code: quiz.QUIZ_CODE,
-                                title: quiz.TITLE,
-                                timeLimit: quiz.TIME_LIMIT,
-                                questions: questions
+                            questions.push({
+                                question: question.QUESTION_TEXT,
+                                options: options,
+                                answer: answer,
+                                type: question.QUESTION_TYPE,
                             });
 
-                            if (quizzes.length === quizResults.length) {
-                                return res.json(quizzes);
+                            processedQuestions++;
+                            if (processedQuestions === questionResults.length) {
+                                quizzes.push({
+                                    username: quiz.USERNAME,
+                                    code: quiz.QUIZ_CODE,
+                                    title: quiz.TITLE,
+                                    timeLimit: quiz.TIME_LIMIT,
+                                    questions,
+                                });
+
+                                processedQuizzes++;
+                                
+                                if (processedQuizzes === quizResults.length) {
+                                    res.json(quizzes);
+                                }
                             }
-                        }
-                    })
-                })
-            })
-        }) 
-    })
-}); 
+                        });
+                    });
+                }
+            });
+        });
+    });
+});
+
+            
 
 // Define the routes for the application
 // '/' route is handled by the 'pages' module
