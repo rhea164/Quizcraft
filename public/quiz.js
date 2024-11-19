@@ -1,4 +1,4 @@
-import { getQuizByCode } from "./QuizManager";
+import { getQuizByCode } from "./QuizManager.js";
 
 let score = 0;
 let totalQuestions = 0;

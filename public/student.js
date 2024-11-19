@@ -8,7 +8,7 @@ document.querySelector('form').addEventListener('submit', (event) => {
     // Check if the quiz code exists in the quizzes object
     if (quizzes[quizCode]) {
       // Redirect to Quiz.html with the quiz code as a URL parameter
-      window.location.href = `Quiz.html?code=${quizCode}`;
+      window.location.href = `/Quiz?code=${quizCode}`;
     } else {
       alert("Invalid quiz code. Please try again.");
     }

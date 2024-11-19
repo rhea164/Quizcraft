@@ -24,6 +24,71 @@
             padding: 10px 20px;
             margin: 5px;
             cursor: pointer;
+            font-size: 0.5em;
+        }
+
+        button:hover {
+            background-color: #3a7ac8; /* Darker shade for hover effect */
+        }
+
+        button:disabled {
+            background-color: #adb5bd; /* Soft gray for disabled buttons */
+            cursor: not-allowed;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            font-size: 1.1em;
+        }
+
+        .feedback.correct {
+            color: green;
+        }
+
+        .feedback.incorrect {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides" id="quizSlides"></div>
+    </div>
+    <div id="timer">Time Left: 60s</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/reveal.min.js"></script>
+    <script type="module" src="/quiz.js"></script>
+</body>
+</html>
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz with Reveal.js</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/theme/white.min.css">
+    <style>
+        #timer {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 1.2em;
+        }
+
+        button {
+            background-color: #4a90e2; /* Modern blue color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
             font-size: 1em;
         }
 
@@ -171,4 +236,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/reveal.min.js"></script>
     <script type="module" src="/quiz.js"></script>
 </body>
-</html>
+</html> -->

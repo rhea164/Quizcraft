@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Add event listener for the cancel button
   cancelBtn.addEventListener('click', () => {
-    window.location.href = 'mentor.html'; // Redirect to mentor.html
+    window.location.href = './mentor'; // Redirect to mentor.html
   });
 
   // addQuestionBtn.addEventListener('click', addQuestionHandler);
@@ -47,7 +47,7 @@ function submitQuizHandler(event) {
   // quizzes[quizCode] = quizData;
   saveQuiz(quizzes);
 
-  window.location.href = 'mentor.html';
+  window.location.href = './mentor';
 };
 
 // Helper function to get query parameters
@@ -60,7 +60,7 @@ function getQueryParam(param) {
 const quizCode = getQueryParam('code');
 if (!quizCode) {
   alert('Quiz code not found in URL!');
-  window.location.href = 'mentor.html';
+  window.location.href = './mentor';
 } else {
   console.log(quizCode);
 }
@@ -73,7 +73,7 @@ console.log(quizData)
 // Check if the quiz exists
 if (!quizData) {
   alert('Quiz not found!');
-  window.location.href = 'mentor.html';
+  window.location.href = './mentor';
 }
 
 // Populate the form fields with quiz data
