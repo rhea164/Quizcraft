@@ -8,10 +8,11 @@ document.querySelector('form').addEventListener('submit',async (event) => {
     getQuizByCode(quizCode);
     const quiz = setTimeout(sessionStorage.getItem('quiz'),1000);
     console.log(quiz);
-    if (quiz == null) {
+    if (quiz == {}) {
       alert("Invalid quiz code. Please try again.");
-    }
-    if(quiz) window.location.href = `/Quiz?code=${quizCode}`;
+    }else {
+      window.location.href = `/Quiz?code=${quizCode}`;
+    } 
     
     
   });
