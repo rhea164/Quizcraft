@@ -49,14 +49,15 @@ db.connect((error) => {
 
 app.post("/api/quiz/takequiz", (req, res) => {
     const quizCode = req.body.code;
-    // if there is no quiz code
+
     if (!quizCode) {
         console.log("Quiz code is required!");
-        return res.status(500).send(null); 
+        return res.status(500).send(null);
     }
 
     const quizQuery = 'SELECT * FROM QUIZZES WHERE QUIZ_CODE = ?';
-    // gets the quiz.
+
+    // Fetch the quiz
     db.query(quizQuery, [quizCode], (err, quizResults) => {
         if (err) {
             console.log("Error fetching the quiz.");
@@ -71,34 +72,48 @@ app.post("/api/quiz/takequiz", (req, res) => {
         const quiz = quizResults[0];
         const questionsQuery = 'SELECT * FROM QUESTIONS WHERE QUIZ_CODE = ?';
 
+        // Fetch questions
         db.query(questionsQuery, [quizCode], (err, questionResults) => {
             if (err) {
                 console.log("Error fetching questions.");
                 return res.status(500).json({});
             }
 
-            const questions = []; // Array to store questions with options
+            if (questionResults.length === 0) {
+                console.log("No questions found for the quiz.");
+                return res.json({
+                    username: quiz.USERNAME,
+                    code: quiz.QUIZ_CODE,
+                    title: quiz.TITLE,
+                    timeLimit: quiz.TIME_LIMIT,
+                    questions: []
+                });
+            }
+
+            const questions = [];
             let processedQuestions = 0;
-            // gets all the questions.
+
             for (let i in questionResults) {
                 const optionsQuery = 'SELECT * FROM OPTIONS WHERE QUESTION_TEXT = ?';
 
+                // Fetch options for each question
                 db.query(optionsQuery, [questionResults[i].QUESTION_TEXT], (err, optionResults) => {
                     if (err) {
                         console.log("Error fetching options.");
                         return res.status(500).json({});
                     }
 
-                    const options = optionResults.map((opt) => opt.OPTION_TEXT); // Extract option text
-                    const answer = optionResults.find((opt) => opt.IS_CORRECT)?.OPTION_TEXT || ''; // Correct answer
-                    // adds 1 question at a time.
+                    const options = optionResults.map((opt) => opt.OPTION_TEXT);
+                    const answer = optionResults.find((opt) => opt.IS_CORRECT)?.OPTION_TEXT || '';
+
+                    // Add the question and its options
                     questions.push({
                         question: questionResults[i].QUESTION_TEXT,
                         options: JSON.stringify(options),
                         answer: answer,
                         type: questionResults[i].QUESTION_TYPE
                     });
-                    // if all questions have been added send back the quiz.
+
                     processedQuestions++;
                     if (processedQuestions === questionResults.length) {
                         // Send the response once all questions are processed
@@ -112,9 +127,10 @@ app.post("/api/quiz/takequiz", (req, res) => {
                     }
                 });
             }
-        });
-    });
+        });
+    });
 });
+
 
 // creates/update a quiz
 app.post("/api/quiz/create", (req, res) => {
