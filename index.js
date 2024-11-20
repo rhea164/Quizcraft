@@ -136,76 +136,121 @@ app.post("/api/quiz/takequiz", (req, res) => {
 app.post("/api/quiz/create", (req, res) => {
     const { username, questions, title, code, timeLimit } = req.body; 
 
-    var query = `SELECT * FROM Questions WHERE Quiz_CODE = ?`;
-   // deletes full quiz. to be replaced for update if it already exists.
-    db.query(query, [code], (error, result) => {
-        if(result.length > 0){
-            // removes options
-            for(let index in questions) {
-                optionsQuery = `DELETE FROM OPTIONS WHERE Question_TEXT = ?`;
-                db.query(optionsQuery, [questions[index].question], (error, result) => {
-                    if(error){
-                        console.log(" couldn't delete options");
-                    } else {
-                        console.log("options removed succefully ");
-                    }
-                });
-            };
-            // removes questions 
-            var query = `DELETE FROM Questions WHERE Quiz_CODE = ?`;
-            db.query(query, [code], (error, result) => {
-                if(error){
-                    console.log(" couldn't delete questions");
-                } else {
-                    console.log("questions removed succefully ");
-                }
-            });
-            // removes quiz. 
-            var query = `DELETE FROM Quizzes WHERE Quiz_CODE = ?`;
-            db.query(query, [code], (error, result) => {
-                if(error){
-                    console.log(" couldn't delete quiz");
-                } else {
-                    console.log("quiz removed succefully ");
-                }
-            });
+    const quizQuery = 'SELECT * FROM QUIZZES WHERE QUIZ_CODE = ?;';
+    db.query(quizQuery, [code], (err, quizResults) => {
+        if (err) {
+            console.log("Error fetching quiz.");
         }
-    });
-    // inserting quiz into quizzes table.
-    var query = `INSERT INTO QUIZZES (quiz_code, USERNAME, title, time_limit) VALUES (?, ?, ?, ?);`;
-    db.query(query, [code, username, title, timeLimit] ,(error, result) =>{
-        if(error){
-            console.log("couldn't insert quiz 1 " + error)
-        } else {
-            console.log("inserted");
-        }
-    });
 
-    // inserting questions.
-    for (let i in questions) {
-       
-        var questionQuery = `INSERT INTO  QUESTIONS (QUIZ_CODE, QUESTION_TEXT, QUESTION_TYPE) VALUES(?, ?, ?);`;
-        db.query(questionQuery, [code, questions[i].question, questions[i].type], (error, result) =>{
+        if (quizResults.length === 0) {
+            console.log("Quiz not found.");
+            insertQuiz();
+        }
+        
+        if(quizResults.length > 0){
+              console.log("Quiz found:", quizResults[0]);
+
+            // Fetch all questions for the quiz
+            const questionsQuery = 'SELECT * FROM QUESTIONS WHERE QUIZ_CODE = ?;';
+            db.query(questionsQuery, [code], (err, questionResults) => {
+                if (err) {
+                    console.log("Error fetching questions!");
+                }
+
+                console.log("Questions found:", questionResults);
+
+                if (questionResults.length === 0) {
+                    // If no questions, proceed to delete the quiz
+                    return deleteQuiz();
+                }
+
+                let processedQuestions = 0;
+
+                // Delete options for each question
+                for (let i in questionResults) {
+                    const optionsQuery = 'DELETE FROM OPTIONS WHERE QUESTION_TEXT = ?;';
+                    db.query(optionsQuery, [questionResults[i].QUESTION_TEXT], (err, optionResults) => {
+                        if (err) {
+                            console.log("Error deleting options for question:", questionResults[i].QUESTION_TEXT);
+                        }
+
+                        console.log("Options deleted for question:", questionResults[i].QUESTION_TEXT);
+                        processedQuestions++;
+
+                        if (processedQuestions === questionResults.length) {
+                            // Once all options are deleted, delete the questions
+                            deleteQuestions();
+                        }
+                    });
+                }
+
+                // Delete all questions for the quiz
+                function deleteQuestions() {
+                    const deleteQuestionsQuery = 'DELETE FROM QUESTIONS WHERE QUIZ_CODE = ?;';
+                    db.query(deleteQuestionsQuery, [code], (err, result) => {
+                        if (err) {
+                            console.log("Error deleting questions!");
+                        }
+
+                        console.log("Questions deleted for quiz code:", code);
+                        deleteQuiz();
+                    });
+              
+                }  
+            });// Delete the quiz itself
+            function deleteQuiz() {
+                const deleteQuizQuery = 'DELETE FROM QUIZZES WHERE QUIZ_CODE = ?;';
+                db.query(deleteQuizQuery, [code], (err, result) => {
+                    if (err) {
+                        console.log("Error deleting quiz!");
+                    }
+                    console.log("Quiz deleted successfully:", code);
+                    insertQuiz();
+                });
+                }
+        }
+
+        
+      
+    });
+    function insertQuiz() {
+            // inserting quiz into quizzes table.
+        var query = `INSERT INTO QUIZZES (quiz_code, USERNAME, title, time_limit) VALUES (?, ?, ?, ?);`;
+        db.query(query, [code, username, title, timeLimit] ,(error, result) =>{
             if(error){
-                console.log("couldn't insert quiz");
+                console.log("couldn't insert quiz 1 " + error)
             } else {
-                console.log(result);
+                console.log("inserted");
             }
         });
-        // inserting options
-        for(let ind in questions[i].options){
-            var optionsQuery = `INSERT INTO  OPTIONS (QUESTION_TEXT, OPTION_TEXT, IS_CORRECT) VALUES(?, ?, ?)`;
-            let correct = questions[i].options[ind] === questions[i].answer;
-            db.query(optionsQuery, [questions[i].question, questions[i].options[ind], correct], (error, result) =>{
-              if(error){
-                  console.log("Error inserting options " + error);
-              } else {
-                  console.log("added option");
-              }
-            });
-        };
 
-    };
+        // inserting questions.
+        for (let i in questions) {
+        
+            var questionQuery = `INSERT INTO  QUESTIONS (QUIZ_CODE, QUESTION_TEXT, QUESTION_TYPE) VALUES(?, ?, ?);`;
+            db.query(questionQuery, [code, questions[i].question, questions[i].type], (error, result) =>{
+                if(error){
+                    console.log("couldn't insert quiz");
+                } else {
+                    console.log(result);
+                }
+            });
+            // inserting options
+            for(let ind in questions[i].options){
+                var optionsQuery = `INSERT INTO  OPTIONS (QUESTION_TEXT, OPTION_TEXT, IS_CORRECT) VALUES(?, ?, ?)`;
+                let correct = questions[i].options[ind] === questions[i].answer;
+                db.query(optionsQuery, [questions[i].question, questions[i].options[ind], correct], (error, result) =>{
+                if(error){
+                    console.log("Error inserting options " + error);
+                } else {
+                    console.log("added option");
+                }
+                });
+            };
+
+        };
+    }
+   
 });
 
 // delete quiz.
