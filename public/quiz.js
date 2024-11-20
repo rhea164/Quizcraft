@@ -23,6 +23,7 @@ function getQuizCodeFromURL() {
       let quiz = JSON.parse(sessionStorage.getItem('quiz'));
       console.log(quiz);
       if (!quiz) {
+        window.location.href = '/student';
         throw new Error('Quiz not found. Please check the quiz code.');
       }
   
