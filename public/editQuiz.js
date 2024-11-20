@@ -62,7 +62,7 @@ if (!quizCode) {
 
 // Load all quizzes from localStorage
 const quizzes = JSON.parse(sessionStorage.getItem('quizzes'));
-console.log(quizzes);
+console.log("QUIZZES HERE:",quizzes);
 let quizData;
 for (let quiz of quizzes) {
   if (quiz.code == quizCode) {
@@ -70,7 +70,7 @@ for (let quiz of quizzes) {
     break;
   }
 }
-console.log(quizData);
+console.log("THIS IS DATA FOR THIS QUIZ",quizData);
 
 
 // Check if the quiz exists
@@ -180,9 +180,12 @@ function saveQuiz() {
       options = ['True', 'False'];
       correctAnswer = div.querySelector('.correctAnswer').value;
     } else {
+      // options = Array.from(div.querySelectorAll('.option')).map(opt => opt.value);
+      // const correctAnswerIndex = parseInt(div.querySelector('.correctAnswer').value);
+      // correctAnswer = options[correctAnswerIndex]; // Store the actual option text as the answer
       options = Array.from(div.querySelectorAll('.option')).map(opt => opt.value);
-      const correctAnswerIndex = parseInt(div.querySelector('.correctAnswer').value);
-      correctAnswer = options[correctAnswerIndex]; // Store the actual option text as the answer
+      correctAnswer = div.querySelector('.correctAnswer').value; // Store the actual value, not index
+
     }
 
     if (questionText && options.every(opt => opt)) {
