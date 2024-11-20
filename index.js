@@ -195,43 +195,91 @@ app.post("/api/quiz/create", (req, res) => {
 // delete quiz.
 app.post("/api/quiz/delete", (req, res) => {
     const code = req.body.code;
-    console.log(code);
-    console.log(" goes");
-    var query = `SELECT * FROM Questions WHERE Quiz_CODE = ?`;
-   
-    db.query(query, [code], (error, result) => {
-        // removes options
-        console.log("result: " + result);
-        for(let index in result) {
-            optionsQuery = `DELETE FROM OPTIONS WHERE Question_TEXT = ?`;
-            db.query(optionsQuery, [result[index].QUESTION_TEXT], (error, result) => {
-                if(error){
-                    console.log(" couldn't delete options");
-                } else {
-                    console.log("options removed succefully ");
-                }
-            });
-        };
-    });
-    // removes questions 
-    var query = `DELETE FROM Questions WHERE Quiz_CODE = ?`;
-    db.query(query, [code], (error, result) => {
-        if(error){
-            console.log(" couldn't delete questions");
-        } else {
-            console.log("questions removed succefully ");
+
+    if (!code) {
+        console.log("Quiz code is required!");
+    }
+
+    console.log("Deleting quiz with code:", code);
+
+    // Fetch the quiz details
+    const quizQuery = 'SELECT * FROM QUIZZES WHERE QUIZ_CODE = ?;';
+    db.query(quizQuery, [code], (err, quizResults) => {
+        if (err) {
+            console.log("Error fetching quiz.");
         }
-    });
-    // removes quiz.
-    var query = `DELETE FROM Quizzes WHERE Quiz_CODE = ?`;
-    db.query(query, [code], (error, result) => {
-        if(error){
-            console.log(" couldn't delete quiz");
-        } else {
-            console.log("quiz removed succefully ");
+
+        if (quizResults.length === 0) {
+            console.log("Quiz not found.");
+        }
+
+        console.log("Quiz found:", quizResults[0]);
+
+        // Fetch all questions for the quiz
+        const questionsQuery = 'SELECT * FROM QUESTIONS WHERE QUIZ_CODE = ?;';
+        db.query(questionsQuery, [code], (err, questionResults) => {
+            if (err) {
+                console.log("Error fetching questions!");
+            }
+
+            console.log("Questions found:", questionResults);
+
+            if (questionResults.length === 0) {
+                // If no questions, proceed to delete the quiz
+                return deleteQuiz();
+            }
+
+            let processedQuestions = 0;
+
+            // Delete options for each question
+            for (let i in questionResults) {
+                const optionsQuery = 'DELETE FROM OPTIONS WHERE QUESTION_TEXT = ?;';
+                db.query(optionsQuery, [questionResults[i].QUESTION_TEXT], (err, optionResults) => {
+                    if (err) {
+                        console.log("Error deleting options for question:", questionResults[i].QUESTION_TEXT);
+                    }
+
+                    console.log("Options deleted for question:", questionResults[i].QUESTION_TEXT);
+                    processedQuestions++;
+
+                    if (processedQuestions === questionResults.length) {
+                        // Once all options are deleted, delete the questions
+                        deleteQuestions();
+                    }
+                });
+            }
+
+            // Delete all questions for the quiz
+            function deleteQuestions() {
+                const deleteQuestionsQuery = 'DELETE FROM QUESTIONS WHERE QUIZ_CODE = ?;';
+                db.query(deleteQuestionsQuery, [code], (err, result) => {
+                    if (err) {
+                        console.log("Error deleting questions!");
+                    }
+
+                    console.log("Questions deleted for quiz code:", code);
+                    deleteQuiz();
+                });
+            }
+        });
+
+        // Delete the quiz itself
+        function deleteQuiz() {
+            const deleteQuizQuery = 'DELETE FROM QUIZZES WHERE QUIZ_CODE = ?;';
+            db.query(deleteQuizQuery, [code], (err, result) => {
+                if (err) {
+                    console.log("Error deleting quiz!");
+                }
+
+                console.log("Quiz deleted successfully:", code);
+            });
         }
     });
 });
+
+
+
+
 // send a json file with all the mentor quizzes.
 app.post("/api/quiz/home", (req, res) => {
 
