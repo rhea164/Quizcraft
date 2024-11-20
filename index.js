@@ -52,7 +52,7 @@ app.post("/api/quiz/takequiz", (req, res) => {
 
     if (!quizCode) {
         console.log("Quiz code is required!");
-        return res.status(500).send(null);
+        return res.status(500).json({});
     }
 
     const quizQuery = 'SELECT * FROM QUIZZES WHERE QUIZ_CODE = ?';
@@ -61,7 +61,7 @@ app.post("/api/quiz/takequiz", (req, res) => {
     db.query(quizQuery, [quizCode], (err, quizResults) => {
         if (err) {
             console.log("Error fetching the quiz.");
-            return res.status(500).send(null);
+            return res.status(500).json({});
         }
 
         if (quizResults.length === 0) {
