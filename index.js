@@ -46,7 +46,7 @@ db.connect((error) => {
         console.log("MySQL connected..."); // Confirm successful connection
     }
 });
-
+// student take quiz page
 app.post("/api/quiz/takequiz", (req, res) => {
     const quizCode = req.body.code;
 
@@ -92,7 +92,7 @@ app.post("/api/quiz/takequiz", (req, res) => {
 
             const questions = [];
             let processedQuestions = 0;
-
+            // goes through every question in the quiz.
             for (let i in questionResults) {
                 const optionsQuery = 'SELECT * FROM OPTIONS WHERE QUESTION_TEXT = ?';
 
@@ -102,8 +102,9 @@ app.post("/api/quiz/takequiz", (req, res) => {
                         console.log("Error fetching options.");
                         return res.status(500).json({});
                     }
-
+                    // creating an options object with all the options i.e. their text
                     const options = optionResults.map((opt) => opt.OPTION_TEXT);
+                    // find the right answer, the first one marked by true in the database for both MCQ and TF
                     const answer = optionResults.find((opt) => opt.IS_CORRECT)?.OPTION_TEXT || '';
 
                     // Add the question and its options
@@ -197,7 +198,8 @@ app.post("/api/quiz/create", (req, res) => {
                     });
               
                 }  
-            });// Delete the quiz itself
+            });
+            // Delete the quiz itself
             function deleteQuiz() {
                 const deleteQuizQuery = 'DELETE FROM QUIZZES WHERE QUIZ_CODE = ?;';
                 db.query(deleteQuizQuery, [code], (err, result) => {
@@ -213,8 +215,9 @@ app.post("/api/quiz/create", (req, res) => {
         
       
     });
+    
     function insertQuiz() {
-            // inserting quiz into quizzes table.
+        // inserting quiz into quizzes table.
         var query = `INSERT INTO QUIZZES (quiz_code, USERNAME, title, time_limit) VALUES (?, ?, ?, ?);`;
         db.query(query, [code, username, title, timeLimit] ,(error, result) =>{
             if(error){
@@ -324,7 +327,7 @@ app.post("/api/quiz/delete", (req, res) => {
             }
         });
 
-        // Delete the quiz itself
+        // Delete the quiz itself.
         function deleteQuiz() {
             const deleteQuizQuery = 'DELETE FROM QUIZZES WHERE QUIZ_CODE = ?;';
             db.query(deleteQuizQuery, [code], (err, result) => {
@@ -386,9 +389,9 @@ app.post("/api/quiz/home", (req, res) => {
                                 console.log("Error fetching options.");
                                 return res.status(500).json({}); // empty JSON object sent back
                             }
-
+                            // creating an options object with all the options i.e. their text
                             const options = optionResults.map((opt) => opt.OPTION_TEXT); 
-                    
+                            // find the right answer, the first one marked by true in the database for both MCQ and TF
                             const answer = optionResults.find((opt) => opt.IS_CORRECT)?.OPTION_TEXT || ''; 
 
                             questions.push({ 
