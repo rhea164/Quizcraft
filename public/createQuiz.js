@@ -1,6 +1,7 @@
 import { generateQuizCode, addQuiz } from './QuizManager.js';
 
 console.log("createQuiz.js");
+// getting the username from the session storage
 let username=sessionStorage.getItem('username');
 
 // document.addEventListener('DOMContentLoaded', () => {
@@ -21,17 +22,18 @@ let username=sessionStorage.getItem('username');
 document.addEventListener('DOMContentLoaded', () => {
     const pageType = document.body.getAttribute('data-page');
   
+    //checking if the page is create
     if (pageType === 'create') {
       const quizForm = document.getElementById('quizForm');
       const addQuestionBtn = document.getElementById('addQuestionBtn');
       const questionType = document.getElementById('questionType');
       
-  
+        // Add the event listener for the add question button
       addQuestionBtn.addEventListener('click', () => {
         const type = questionType.value;
         addQuestion(type);
       });
-  
+      // Add event listener for the submit button
       quizForm.addEventListener('submit', (event)=> {
         event.preventDefault();
         finishQuiz();
@@ -42,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const defaultTimeLimit = 60;
 
+// function which adds a question card to the quiz
 function addQuestion(type) {
     let questionHtml = '';
 
@@ -100,13 +103,15 @@ function addQuestion(type) {
     .slideDown(300);
 }
 
+// function which deletes a question card from the quiz
 function deleteQuestion(button) {
     const questionDiv = button.closest('.question');
     questionDiv.remove();
 }
 
+// function which finishes the quiz creation process and adds the quiz to the database
 function finishQuiz() {
-    const quizTitle = document.getElementById('quizTitle').value; // Changed this line
+    const quizTitle = document.getElementById('quizTitle').value; 
     const quizCode = generateQuizCode();
     const questions = [];
     const timeLimit = parseInt(document.getElementById('timeLimit').value) || 60;
@@ -117,6 +122,8 @@ function finishQuiz() {
 
         questionDivs.forEach(div => {
             const questionText = div.querySelector('.questionText').value;
+
+            // Determine question type based on number of options
             const type = div.querySelector('.correctAnswer').options.length === 2 ? 'TF' : 'MCQ';
 
             let options, correctAnswer;
@@ -125,12 +132,15 @@ function finishQuiz() {
                 options = ['True', 'False'];
                 correctAnswer = div.querySelector('.correctAnswer').value;
             } else {
+                // get the options for multiple choice question and the correct answer
                 options = Array.from(div.querySelectorAll('.option')).map(opt => opt.value);
                 const correctAnswerIndex = parseInt(div.querySelector('.correctAnswer').value);
                 correctAnswer = options[correctAnswerIndex];
             }
 
+            // Check if question and all options are filled
             if (questionText && options.every(opt => opt)) {
+                // Add question to the list
                 questions.push({
                     question: questionText,
                     options: options,
@@ -140,11 +150,13 @@ function finishQuiz() {
             }
         });
 
+        // Check if at least one question is added
         if (questions.length > 0) {
             const success = addQuiz(username,quizCode, quizTitle, questions, timeLimit);
 
             if (success) {
                 alert(`Quiz created successfully! Quiz Code: ${quizCode}`);
+                // Clear the form
                 questionContainer.innerHTML = '';
                 quizForm.reset();
             } else {
@@ -159,7 +171,6 @@ function finishQuiz() {
 }
 
 // Make functions available globally
-
 window.deleteQuestion = deleteQuestion;
 window.addQuestion = addQuestion;
 
