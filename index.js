@@ -52,7 +52,7 @@ app.post("/api/quiz/takequiz", (req, res) => {
 
     if (!quizCode) {
         console.log("Quiz code is required!");
-        return res.status(500).json({code: -1});
+        return res.status(500).send(null);
     }
 
     const quizQuery = 'SELECT * FROM QUIZZES WHERE QUIZ_CODE = ?';
@@ -61,12 +61,12 @@ app.post("/api/quiz/takequiz", (req, res) => {
     db.query(quizQuery, [quizCode], (err, quizResults) => {
         if (err) {
             console.log("Error fetching the quiz.");
-            return res.status(500).json({code: -1});
+            return res.status(500).send(null);
         }
 
         if (quizResults.length === 0) {
             console.log("No quizzes found!");
-            return res.status(404).json({code: -1});
+            return res.status(404).json({});
         }
 
         const quiz = quizResults[0];
@@ -76,7 +76,7 @@ app.post("/api/quiz/takequiz", (req, res) => {
         db.query(questionsQuery, [quizCode], (err, questionResults) => {
             if (err) {
                 console.log("Error fetching questions.");
-                return res.status(500).json({code: -1});
+                return res.status(500).json({});
             }
 
             if (questionResults.length === 0) {
@@ -100,7 +100,7 @@ app.post("/api/quiz/takequiz", (req, res) => {
                 db.query(optionsQuery, [questionResults[i].QUESTION_TEXT], (err, optionResults) => {
                     if (err) {
                         console.log("Error fetching options.");
-                        return res.status(500).json({code: -1});
+                        return res.status(500).json({});
                     }
 
                     const options = optionResults.map((opt) => opt.OPTION_TEXT);
@@ -348,7 +348,7 @@ app.post("/api/quiz/home", (req, res) => {
    
     if (!username) {
         console.log("Please provide username!!");
-        return res.status(500).json(); // empty JSON object sent back
+        return res.status(500).json({}); // empty JSON object sent back
     }
 
     var quizzesQuery = 'SELECT * FROM QUIZZES WHERE USERNAME = ?;';
@@ -356,12 +356,12 @@ app.post("/api/quiz/home", (req, res) => {
     db.query(quizzesQuery, [username], (err, quizResults) => {
         if (err) {
             console.log("Error fetching quizzes.");
-            return res.status(500).json(); // empty JSON object sent back
+            return res.status(500).json({}); // empty JSON object sent back
         }
         console.log("quiz " + quizResults);
         if (quizResults.length === 0) {
             console.log("No quizzes found for this mentor.");
-            return res.status(200).json(); // empty JSON object sent back
+            return res.status(200).json({}); // empty JSON object sent back
         }
 
         const quizzes = []; 
@@ -372,7 +372,7 @@ app.post("/api/quiz/home", (req, res) => {
             db.query(questionsQuery, [quizResults[index].QUIZ_CODE], (err, questionResults) => {
                 if (err) {
                     console.log("Error fetching questions!");
-                    return res.status(500).json(); // empty JSON object sent back
+                    return res.status(500).json({}); // empty JSON object sent back
                 }
 
                 const questions = []; // To hold all questions for this quiz
@@ -384,7 +384,7 @@ app.post("/api/quiz/home", (req, res) => {
                         db.query(optionsQuery, [questionResults[i].QUESTION_TEXT], (err, optionResults) => {
                             if (err) {
                                 console.log("Error fetching options.");
-                                return res.status(500).json(); // empty JSON object sent back
+                                return res.status(500).json({}); // empty JSON object sent back
                             }
 
                             const options = optionResults.map((opt) => opt.OPTION_TEXT); 
