@@ -108,7 +108,7 @@ function populateQuestions(questions) {
     const questionInput = questionCard.querySelector('.question-input');
     questionInput.value = question.question;
 
-    // Set the correct option
+    // Setting the correct option
     const correctOptionSelect = questionCard.querySelector('.correct-option-select');
     correctOptionSelect.value = question.answer;
 
@@ -131,10 +131,11 @@ function populateQuestions(questions) {
     deleteButton.classList.add('btn', 'btn-danger');
     deleteButton.setAttribute('data-index', index); // Set data attribute
     deleteButton.setAttribute('type', 'button'); // Prevents form submission
-    deleteButton.addEventListener('click', (event) => {
-      const questionIndex = parseInt(event.target.getAttribute('data-index'), 10);
-      deleteQuestion(event,questionIndex);
-    });
+    
+    // deleteButton.addEventListener('click', (event) => {
+    //   // const questionIndex = parseInt(event.target.getAttribute('data-index'), 10);
+    //   // deleteQuestion(event,questionIndex);
+    // });
 
     // // Add the delete button to the question card
     // questionCard.appendChild(deleteButton);
@@ -151,14 +152,14 @@ populateQuestions(quizData.questions);
 
 
 //delete question from quiz
-function deleteQuestion(event,index) {
-  // Remove the question from quizData.questions
-  quizData.questions.splice(index, 1);
-  // Get the delete button that was clicked
-  const questionDiv = event.target.closest('.question');
-  questionDiv.remove();
+// function deleteQuestion(event,index) {
+//   // Remove the question from quizData.questions
+//   quizData.questions.splice(index, 1);
+//   // Get the delete button that was clicked
+//   const questionDiv = event.target.closest('.question');
+//   questionDiv.remove();
  
-}
+// }
 
 
 function saveQuiz() {
