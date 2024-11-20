@@ -138,6 +138,7 @@ app.post("/api/quiz/create", (req, res) => {
     const { username, questions, title, code, timeLimit } = req.body; 
 
     const quizQuery = 'SELECT * FROM QUIZZES WHERE QUIZ_CODE = ?;';
+    // delete quiz if it already exists for update.
     db.query(quizQuery, [code], (err, quizResults) => {
         if (err) {
             console.log("Error fetching quiz.");
@@ -215,7 +216,7 @@ app.post("/api/quiz/create", (req, res) => {
         
       
     });
-    
+    // inserts the quiz and remakes the quiz if it gets updated.
     function insertQuiz() {
         // inserting quiz into quizzes table.
         var query = `INSERT INTO QUIZZES (quiz_code, USERNAME, title, time_limit) VALUES (?, ?, ?, ?);`;
@@ -369,7 +370,7 @@ app.post("/api/quiz/home", (req, res) => {
 
         const quizzes = []; 
         let processedQuizzes = 0;
-
+        // for loop to go thorugh every quiz and get the questions and options.
         for(let index in quizResults)  {
             const questionsQuery = 'SELECT * FROM QUESTIONS WHERE QUIZ_CODE = ?';
             db.query(questionsQuery, [quizResults[index].QUIZ_CODE], (err, questionResults) => {
@@ -380,7 +381,7 @@ app.post("/api/quiz/home", (req, res) => {
 
                 const questions = []; // To hold all questions for this quiz
                 let processedQuestions = 0;
-         
+                    // for loop to go through each question in the current quiz.
                     for(let i in questionResults)  {
                         const optionsQuery = 'SELECT * FROM OPTIONS WHERE QUESTION_TEXT = ?;';
 
