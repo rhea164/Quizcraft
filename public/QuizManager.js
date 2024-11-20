@@ -103,7 +103,8 @@ function deleteQuiz(quizCode) {
   console.log('Deleting quiz with code:', quizCode);
   fetch("http://localhost:5000/api/quiz/delete",
     {method: 'POST', headers: { 'Content-Type' : 'application/json'}, body: JSON.stringify({code: quizCode})})
-  .then(res => console.log(res.status));
+  .then(res => console.log(res.status))
+  .then(window.location.href = '/mentor')
   loadQuizzes();
 };
 
