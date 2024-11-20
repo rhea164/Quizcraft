@@ -94,6 +94,7 @@ function addQuiz(username,quizCode, quizTitle, questions,timeLimit) {
   fetch("http://localhost:5000/api/quiz/create",
     {method: 'POST', headers: { 'Content-Type' : 'application/json'}, body: JSON.stringify(quiz)})
      .then(response => console.log(response.status))
+     .then(window.location.href = '/mentor')
      .catch(error => console.log("POST ERROR :" + error));
   return true;
 }
