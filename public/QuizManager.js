@@ -108,13 +108,14 @@ function deleteQuiz(quizCode) {
 
 // Function to fetch a quiz by its code
 function getQuizByCode(quizCode) {
-  const quiz = null;
   fetch("http://localhost:5000/api/quiz/takequiz",
      { method: 'POST',headers: {'Content-Type': 'application/json',}, body: JSON.stringify({code: quizCode})})
      .then(response => response.json())
-     .then(data => {quiz = data})
+     .then(data => {
+      const quiz = data 
+      sessionStorage.setItem('quiz', quiz);
+    })
      .catch(error => {console.log("STUDENT CODE ERROR:" + error)});
-  return quiz;
 }
 
 // Export functions for use in other files

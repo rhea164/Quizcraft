@@ -5,7 +5,8 @@ document.querySelector('form').addEventListener('submit', (event) => {
     
     const quizCode = document.getElementById('student-code').value.trim();
 
-    const quiz = getQuizByCode(quizCode);
+    getQuizByCode(quizCode);
+    const quiz = sessionStorage.getItem('quiz');
     if (quiz == null) {
       alert("Invalid quiz code. Please try again.");
     }
