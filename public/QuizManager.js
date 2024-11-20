@@ -107,13 +107,17 @@ function deleteQuiz(quizCode) {
 };
 
 // Function to fetch a quiz by its code
-function getQuizByCode(quizCode) {
+async function getQuizByCode(quizCode) {
   fetch("http://localhost:5000/api/quiz/takequiz",
      { method: 'POST',headers: {'Content-Type': 'application/json',}, body: JSON.stringify({code: quizCode})})
      .then(response => response.json())
      .then(data => {
-      const quiz = data 
-      sessionStorage.setItem('quiz', quiz);
+      const quiz = data;
+      quiz.questions = JSON.parse(quiz.questions);
+        for(let j in quiz.questions){
+          quiz.questions[j].options = JSON.parse(quiz.questions[j].options);
+        }
+      sessionStorage.setItem('quiz', JSON.stringify(quiz));
     })
      .catch(error => {console.log("STUDENT CODE ERROR:" + error)});
 }
