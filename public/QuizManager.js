@@ -93,17 +93,21 @@ function getUsername() {
     };
     fetch("http://localhost:5000/api/quiz/create",
       {method: 'POST', headers: { 'Content-Type' : 'application/json'}, body: JSON.stringify(quiz)})
-       .then(response => console.log(response.status))
+       .then(response => {
+        console.log(response.status);
+        loadQuizzes();
+       })
        .catch(error => console.log("POST ERROR :" + error));
-    return true;
   }
 
   function deleteQuiz(quizCode) {
     console.log('Deleting quiz with code:', quizCode);
     fetch("http://localhost:5000/api/quiz/delete",
       {method: 'POST', headers: { 'Content-Type' : 'application/json'}, body: JSON.stringify({code: quizCode})})
-    .then(res => console.log(res.status));
-    loadQuizzes();
+    .then(res => {
+      console.log(res.status);
+      loadQuizzes();
+  });
   };
   
   // Function to fetch a quiz by its code
