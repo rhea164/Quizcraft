@@ -2,7 +2,7 @@
 
 // Store quizzes in sessionStorage to persist data
 const loadQuizzes = () => {
-  fetch("http://localhost:8000/api/quiz/home",
+  fetch("http://localhost:5000/api/quiz/home",
     { method: 'POST',headers: {'Content-Type': 'application/json',}, body: JSON.stringify({username: getUsername()})})
     .then(response => response.json())
     .then(data => {
@@ -91,7 +91,7 @@ function addQuiz(username,quizCode, quizTitle, questions,timeLimit) {
       questions: questions,
       timeLimit: timeLimit
   };
-  fetch("http://localhost:8000/api/quiz/create",
+  fetch("http://localhost:5000/api/quiz/create",
     {method: 'POST', headers: { 'Content-Type' : 'application/json'}, body: JSON.stringify(quiz)})
      .then(response => console.log(response.status))
      .catch(error => console.log("POST ERROR :" + error));
@@ -100,7 +100,7 @@ function addQuiz(username,quizCode, quizTitle, questions,timeLimit) {
 
 function deleteQuiz(quizCode) {
   console.log('Deleting quiz with code:', quizCode);
-  fetch("http://localhost:8000/api/quiz/delete",
+  fetch("http://localhost:5000/api/quiz/delete",
     {method: 'POST', headers: { 'Content-Type' : 'application/json'}, body: JSON.stringify({code: quizCode})})
   .then(res => console.log(res.status));
   loadQuizzes();
@@ -109,7 +109,7 @@ function deleteQuiz(quizCode) {
 // Function to fetch a quiz by its code
 function getQuizByCode(quizCode) {
   const quiz = null;
-  fetch("http://localhost:8000/api/quiz/takequiz",
+  fetch("http://localhost:5000/api/quiz/takequiz",
      { method: 'POST',headers: {'Content-Type': 'application/json',}, body: JSON.stringify({code: quizCode})})
      .then(response => response.json())
      .then(data => {quiz = data})
