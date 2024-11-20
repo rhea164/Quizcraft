@@ -6,9 +6,11 @@ let timeLeft = 60;
 let timerInterval;
 let scorePercentage = 0;
 
+// Load the quiz when the DOM content is loaded
 document.addEventListener('DOMContentLoaded', () => {
     loadQuestions();
 });
+
 // Get quiz code from the URL
 function getQuizCodeFromURL() {
     const params = new URLSearchParams(window.location.search);
@@ -18,21 +20,28 @@ function getQuizCodeFromURL() {
   // Load quiz questions based on the quiz code
   async function loadQuestions() {
     try {
+      // Get the quiz code from the URL
       const quizCode = getQuizCodeFromURL();
+      // get the quiz data from the server
       await getQuizByCode(quizCode);
+
+      // Get the quiz data from the session storage
       let quiz = JSON.parse(sessionStorage.getItem('quiz'));
       console.log(quiz);
+      // Check if the quiz exists
       if (!quiz) {
         window.location.href = '/student';
         throw new Error('Quiz not found. Please check the quiz code.');
       }
   
+      // set the time left to the time limit of the quiz
       timeLeft = quiz.timeLimit * 60;
       console.log('Quiz:', quiz);
       const questions = quiz.questions;
       const slidesContainer = document.getElementById('quizSlides');
       totalQuestions = questions.length;
   
+      // Append each question as a slide
       questions.forEach((item, index) => {
         const slide = document.createElement('section');
         slide.innerHTML = `
@@ -70,13 +79,15 @@ function getQuizCodeFromURL() {
         touch: true,
       });
 
+      // Check if the last slide is reached
       Reveal.on('slidechanged', (event) => {
         if (Reveal.getCurrentSlide().nextElementSibling === null) {
+          // End the quiz if the last slide is reached
             endQuiz();
         }
     });
     
-  
+    // Start the timer
       startTimer();
     } catch (error) {
       console.error("Error loading quiz:", error);
@@ -91,6 +102,7 @@ function getQuizCodeFromURL() {
     // Prevent further clicks on options after an answer has been selected
     if (feedbackElement.textContent) return;
 
+    // Provide feedback based on the selected option
     if (selectedOption === correctAnswer) {
         feedbackElement.textContent = "Correct!";
         feedbackElement.classList.add("correct");
