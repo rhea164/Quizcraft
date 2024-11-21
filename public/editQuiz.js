@@ -131,14 +131,14 @@ function populateQuestions(questions) {
     deleteButton.classList.add('btn', 'btn-danger');
     deleteButton.setAttribute('data-index', index); // Set data attribute
     deleteButton.setAttribute('type', 'button'); // Prevents form submission
-    
-    // deleteButton.addEventListener('click', (event) => {
-    //   // const questionIndex = parseInt(event.target.getAttribute('data-index'), 10);
-    //   // deleteQuestion(event,questionIndex);
-    // });
 
-    // // Add the delete button to the question card
-    // questionCard.appendChild(deleteButton);
+    deleteButton.addEventListener('click', (event) => {
+      const questionIndex = parseInt(event.target.getAttribute('data-index'), 10);
+      deleteQuestion(event,questionIndex);
+    });
+
+    // Add the delete button to the question card
+    questionCard.appendChild(deleteButton);
 
     const cardBody = questionCard.querySelector('.card-body');
     cardBody.appendChild(deleteButton);
@@ -151,15 +151,15 @@ function populateQuestions(questions) {
 populateQuestions(quizData.questions);
 
 
-//delete question from quiz
-// function deleteQuestion(event,index) {
-//   // Remove the question from quizData.questions
-//   quizData.questions.splice(index, 1);
-//   // Get the delete button that was clicked
-//   const questionDiv = event.target.closest('.question');
-//   questionDiv.remove();
+// delete question from quiz
+function deleteQuestion(event,index) {
+  // Remove the question from quizData.questions
+  quizData.questions.splice(index, 1);
+  // Get the delete button that was clicked
+  const questionDiv = event.target.closest('.question');
+  questionDiv.remove();
  
-// }
+}
 
 
 function saveQuiz() {
@@ -181,11 +181,13 @@ function saveQuiz() {
       options = ['True', 'False'];
       correctAnswer = div.querySelector('.correctAnswer').value;
     } else {
-      // options = Array.from(div.querySelectorAll('.option')).map(opt => opt.value);
-      // const correctAnswerIndex = parseInt(div.querySelector('.correctAnswer').value);
-      // correctAnswer = options[correctAnswerIndex]; // Store the actual option text as the answer
       options = Array.from(div.querySelectorAll('.option')).map(opt => opt.value);
-      correctAnswer = div.querySelector('.correctAnswer').value; // Store the actual value, not index
+      // const correctAnswerIndex = parseInt(div.querySelector('.correctAnswer').value);
+      const correctAnswerIndex = div.querySelector('.correctAnswer').selectedIndex;
+      correctAnswer = options[correctAnswerIndex]; // Store the actual option text as the answer
+      // options = Array.from(div.querySelectorAll('.option')).map(opt => opt.value);
+      // correctAnswer = div.querySelector('.correctAnswer').value; // Store the actual value, not index
+      console.log("Correct ans:",correctAnswer);
 
     }
 
